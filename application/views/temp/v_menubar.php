@@ -105,6 +105,7 @@
 						<a class="dropdown-item" type="button" href="<?php echo base_url(); ?>properti/tipe_properti">Tipe Properti</a>
 						<a class="dropdown-item" type="button" href="<?php echo base_url(); ?>properti/jenis_properti">Jenis Properti</a>
 						<a class="dropdown-item" type="button" href="<?php echo base_url(); ?>properti/sertifikat">Sertifikat</a>
+						<a class="dropdown-item" type="button" href="<?php echo base_url(); ?>properti/sosial_media">Sosial Media</a>
 					</div>
 				</li>
 				<li class="nav-item dropdown">

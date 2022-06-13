@@ -7266,7 +7266,7 @@ CREATE TABLE `m_admin` (
 /*Data for the table `m_admin` */
 
 insert  into `m_admin`(`id_admin`,`nama_admin`,`email`,`password`,`create_at`,`update_at`,`delete_at`) values 
-(1,'admin','admin@propertyku.com','8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918','2022-05-21 22:18:15',NULL,NULL);
+(1,'admin','admin@propertyku.com','8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918','2022-05-24 02:04:13',NULL,NULL);
 
 /*Table structure for table `m_affilate` */
 
@@ -7317,12 +7317,26 @@ CREATE TABLE `m_jenis_properti` (
   `update_at` datetime DEFAULT NULL,
   `delete_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id_jenis_properti`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 /*Data for the table `m_jenis_properti` */
 
-insert  into `m_jenis_properti`(`id_jenis_properti`,`jenis_properti`,`create_at`,`update_at`,`delete_at`) values 
-(1,'Baru','2022-05-24 14:44:21',NULL,NULL);
+/*Table structure for table `m_log_email` */
+
+DROP TABLE IF EXISTS `m_log_email`;
+
+CREATE TABLE `m_log_email` (
+  `id_log_email` bigint(20) NOT NULL AUTO_INCREMENT,
+  `subject` varchar(300) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `email` varchar(300) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `pesan` mediumtext COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `error` mediumtext COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `catatan` mediumtext COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `create_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id_log_email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+/*Data for the table `m_log_email` */
 
 /*Table structure for table `m_member` */
 
@@ -7334,18 +7348,47 @@ CREATE TABLE `m_member` (
   `hp` varchar(15) COLLATE utf8_unicode_ci DEFAULT NULL,
   `nama` varchar(300) COLLATE utf8_unicode_ci DEFAULT NULL,
   `id_bank` bigint(20) DEFAULT NULL,
-  `no_bank` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `no_bank` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `nama_pemilik_rekekning` varchar(300) COLLATE utf8_unicode_ci DEFAULT NULL,
   `alamat` text COLLATE utf8_unicode_ci DEFAULT NULL,
   `password` text COLLATE utf8_unicode_ci DEFAULT NULL,
   `key_aktifation_email` text COLLATE utf8_unicode_ci DEFAULT NULL,
   `verification_email` int(1) DEFAULT 0 COMMENT '0=belum verifikas; 1=sudah verifikasi',
+  `foto` varchar(300) COLLATE utf8_unicode_ci DEFAULT NULL,
   `create_at` datetime DEFAULT NULL,
   `update_at` datetime DEFAULT NULL,
   `delete_at` datetime DEFAULT NULL,
+  `send_email_at` datetime DEFAULT NULL,
+  `key_reset_email` text COLLATE utf8_unicode_ci DEFAULT NULL,
+  `status_reset` int(1) DEFAULT 1,
+  `api_key` text COLLATE utf8_unicode_ci DEFAULT NULL,
+  `android_version` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `android_merk` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `android_app` varchar(25) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id_member`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 /*Data for the table `m_member` */
+
+insert  into `m_member`(`id_member`,`email`,`hp`,`nama`,`id_bank`,`no_bank`,`nama_pemilik_rekekning`,`alamat`,`password`,`key_aktifation_email`,`verification_email`,`foto`,`create_at`,`update_at`,`delete_at`,`send_email_at`,`key_reset_email`,`status_reset`,`api_key`,`android_version`,`android_merk`,`android_app`) values 
+(1,'phpemailku@gmail.com',NULL,'SUGARWANTO ATMAJA',NULL,NULL,NULL,NULL,'ddefcb00be422cd46ca2de0f72617e594a3a1bef9236315450ca84655ab274eb','c4ec648150dce1cc76666bf4b100dd070cd625c9f60bd265428cfbc0ea176914',1,NULL,NULL,'2022-06-07 22:40:13',NULL,'2022-06-07 22:22:24','3453181cda872567e2fef4d727f36ad1c4302936c2b2af705b13a771c1f16926',1,NULL,NULL,NULL,NULL);
+
+/*Table structure for table `m_nonmember` */
+
+DROP TABLE IF EXISTS `m_nonmember`;
+
+CREATE TABLE `m_nonmember` (
+  `id_nonmember` bigint(20) NOT NULL AUTO_INCREMENT,
+  `api_key` varchar(300) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `android_version` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `android_merk` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `android_app` varchar(25) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `create_at` datetime DEFAULT NULL,
+  `update_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id_nonmember`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+/*Data for the table `m_nonmember` */
 
 /*Table structure for table `m_paket_promo` */
 
@@ -7379,12 +7422,9 @@ CREATE TABLE `m_sertifikat` (
   `update_at` datetime DEFAULT NULL,
   `delete_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id_sertifikat`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 /*Data for the table `m_sertifikat` */
-
-insert  into `m_sertifikat`(`id_sertifikat`,`nama_sertifikat`,`create_at`,`update_at`,`delete_at`) values 
-(1,'SHM','2022-05-24 15:08:55',NULL,NULL);
 
 /*Table structure for table `m_tipe_properti` */
 
@@ -7397,15 +7437,9 @@ CREATE TABLE `m_tipe_properti` (
   `update_at` datetime DEFAULT NULL,
   `delete_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id_tipe_properti`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 /*Data for the table `m_tipe_properti` */
-
-insert  into `m_tipe_properti`(`id_tipe_properti`,`nama_properti`,`create_at`,`update_at`,`delete_at`) values 
-(1,'Rumah','2022-05-27 08:59:37',NULL,NULL),
-(2,'Apartemen','2022-05-27 08:59:45',NULL,NULL),
-(3,'Villa','2022-05-27 09:04:44',NULL,NULL),
-(4,'Gudang','2022-05-27 09:07:54',NULL,NULL);
 
 /*Table structure for table `m_toko_member` */
 
@@ -7415,6 +7449,9 @@ CREATE TABLE `m_toko_member` (
   `id_toko_member` bigint(20) NOT NULL AUTO_INCREMENT,
   `id_member` bigint(20) DEFAULT NULL,
   `nama_toko` varchar(300) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `lokasi_lng` double DEFAULT NULL,
+  `lokasi_lat` double DEFAULT NULL,
+  `alamat` text COLLATE utf8_unicode_ci DEFAULT NULL,
   `status` int(1) DEFAULT 1 COMMENT '0=libur; 1=aktif',
   `create_at` datetime DEFAULT NULL,
   `update_at` datetime DEFAULT NULL,
@@ -7452,6 +7489,7 @@ CREATE TABLE `m_toko_produk_member` (
   `jml_km` int(3) DEFAULT NULL,
   `deskripsi` mediumtext COLLATE utf8_unicode_ci DEFAULT NULL,
   `status` int(1) DEFAULT 1 COMMENT '0=draft; 1=publish; 2=sold',
+  `status_affiliate` int(1) DEFAULT 0 COMMENT '0=tidak pakai affiliate; 1 =pakai jasa affiliate',
   `persen_komisi_affilate` double DEFAULT NULL,
   `maksimal_komisi_affilate` double DEFAULT NULL,
   `create_at` datetime DEFAULT NULL,
@@ -7463,24 +7501,14 @@ CREATE TABLE `m_toko_produk_member` (
   KEY `id_jenis_properti` (`id_jenis_properti`),
   KEY `id_sertifikat` (`id_sertifikat`),
   KEY `id_member` (`id_toko_member`),
-  KEY `id_districts` (`id_districts`),
-  KEY `id_regencies` (`id_regencies`),
-  KEY `id_provinces` (`id_provinces`),
   CONSTRAINT `m_toko_produk_member_ibfk_2` FOREIGN KEY (`id_villages`) REFERENCES `villages` (`id`),
   CONSTRAINT `m_toko_produk_member_ibfk_3` FOREIGN KEY (`id_tipe_properti`) REFERENCES `m_tipe_properti` (`id_tipe_properti`),
   CONSTRAINT `m_toko_produk_member_ibfk_4` FOREIGN KEY (`id_jenis_properti`) REFERENCES `m_jenis_properti` (`id_jenis_properti`),
   CONSTRAINT `m_toko_produk_member_ibfk_5` FOREIGN KEY (`id_sertifikat`) REFERENCES `m_sertifikat` (`id_sertifikat`),
-  CONSTRAINT `m_toko_produk_member_ibfk_6` FOREIGN KEY (`id_toko_member`) REFERENCES `m_toko_member` (`id_toko_member`),
-  CONSTRAINT `m_toko_produk_member_ibfk_7` FOREIGN KEY (`id_districts`) REFERENCES `districts` (`id`),
-  CONSTRAINT `m_toko_produk_member_ibfk_8` FOREIGN KEY (`id_regencies`) REFERENCES `regencies` (`id`),
-  CONSTRAINT `m_toko_produk_member_ibfk_9` FOREIGN KEY (`id_provinces`) REFERENCES `provinces` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  CONSTRAINT `m_toko_produk_member_ibfk_6` FOREIGN KEY (`id_toko_member`) REFERENCES `m_toko_member` (`id_toko_member`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 /*Data for the table `m_toko_produk_member` */
-
-insert  into `m_toko_produk_member`(`id_toko_produk_member`,`id_toko_member`,`nama_properti`,`alamat`,`lokasi_lat`,`lokasi_lng`,`id_provinces`,`id_regencies`,`id_districts`,`id_villages`,`id_tipe_properti`,`id_jenis_properti`,`id_sertifikat`,`luas_tanah`,`luas_bangunan`,`tahun`,`harga`,`nama_developer`,`jml_kt`,`jml_km`,`deskripsi`,`status`,`persen_komisi_affilate`,`maksimal_komisi_affilate`,`create_at`,`update_at`,`delete_at`) values 
-(2,NULL,'Taman Dayu Ciputra Home','Jl. Raya Surabaya - Malang Jl. Kalitengah Baru, Sukorejo, Karang Jati, Kec. Pandaan, Pasuruan, Jawa Timur 67161',-7.6663779613803795,112.70002627247581,'35','3514','3514120','3514120003',3,1,1,1000,975,2022,25000000,'Ciputra',5,5,'Rumah serasa villa, dengan hunian yang asri dan indah untuk keluarga kecil maupun besar.\r\nDi kelilingi dengan panorama indahnya lapangan golf.',1,NULL,NULL,'2022-05-27 09:26:49',NULL,NULL),
-(3,NULL,'Taman Dayu Ciputra','Jl. Raya Surabaya - Malang Jl. Kalitengah Baru, Sukorejo, Karang Jati, Kec. Pandaan, Pasuruan, Jawa Timur 67161',-7.666484290745162,112.69968294972381,'64','6472','6472050','6472050008',1,1,1,250,500,2022,120000,'Ahmad Developer',4,2,'Bagus kok aman aja booosqueeee',1,NULL,NULL,'2022-05-27 09:42:44','2022-05-29 16:03:25',NULL);
 
 /*Table structure for table `m_toko_produk_member_foto` */
 
@@ -7492,12 +7520,26 @@ CREATE TABLE `m_toko_produk_member_foto` (
   `file_url` text COLLATE utf8_unicode_ci DEFAULT NULL,
   `create_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id_produk_foto`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 /*Data for the table `m_toko_produk_member_foto` */
 
-insert  into `m_toko_produk_member_foto`(`id_produk_foto`,`id_toko_produk_member`,`file_url`,`create_at`) values 
-(14,3,'file/property/property_edit_0-1653802030.jpg','2022-05-29 13:27:10');
+/*Table structure for table `m_versi_android` */
+
+DROP TABLE IF EXISTS `m_versi_android`;
+
+CREATE TABLE `m_versi_android` (
+  `id_versi_android` bigint(20) NOT NULL AUTO_INCREMENT,
+  `versi` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ket` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `url_update` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `status` int(1) DEFAULT 0,
+  `aktif_at` datetime DEFAULT NULL,
+  `nonaktif_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id_versi_android`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+/*Data for the table `m_versi_android` */
 
 /*Table structure for table `provinces` */
 
@@ -8078,32 +8120,58 @@ insert  into `regencies`(`id`,`province_id`,`name`) values
 ('9436','94','KABUPATEN DEIYAI'),
 ('9471','94','KOTA JAYAPURA');
 
+/*Table structure for table `t_promo_iklan_slot` */
+
+DROP TABLE IF EXISTS `t_promo_iklan_slot`;
+
+CREATE TABLE `t_promo_iklan_slot` (
+  `id_slot_iklan` bigint(20) NOT NULL AUTO_INCREMENT,
+  `id_toko_promo` bigint(20) DEFAULT NULL,
+  `id_produk_toko_member` bigint(20) DEFAULT NULL,
+  `create_at` datetime DEFAULT NULL,
+  `delete_at` datetime DEFAULT NULL,
+  `id_member_last` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id_slot_iklan`),
+  KEY `id_toko_promo` (`id_toko_promo`),
+  KEY `id_produk_toko_member` (`id_produk_toko_member`),
+  KEY `id_member_last` (`id_member_last`),
+  CONSTRAINT `t_promo_iklan_slot_ibfk_1` FOREIGN KEY (`id_toko_promo`) REFERENCES `t_promo_toko_produk_member` (`id_toko_promo`),
+  CONSTRAINT `t_promo_iklan_slot_ibfk_2` FOREIGN KEY (`id_produk_toko_member`) REFERENCES `m_toko_produk_member` (`id_toko_produk_member`),
+  CONSTRAINT `t_promo_iklan_slot_ibfk_3` FOREIGN KEY (`id_member_last`) REFERENCES `m_member` (`id_member`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+/*Data for the table `t_promo_iklan_slot` */
+
 /*Table structure for table `t_promo_toko_produk_member` */
 
 DROP TABLE IF EXISTS `t_promo_toko_produk_member`;
 
 CREATE TABLE `t_promo_toko_produk_member` (
   `id_toko_promo` bigint(20) NOT NULL AUTO_INCREMENT,
-  `id_toko_produk_member` bigint(20) DEFAULT NULL,
   `id_paket_promo` bigint(20) DEFAULT NULL,
   `id_bank` bigint(20) DEFAULT NULL,
   `no_bank` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `lama_masa_aktif_promo` int(11) DEFAULT NULL,
   `waktu_aktif_promo` datetime DEFAULT NULL,
-  `harga_unix` int(11) DEFAULT NULL COMMENT 'harga asli - unix kode= karena tidak ada dompet',
-  `status_verifikasi` int(1) DEFAULT 0 COMMENT '0=pending; 1=sukses; 2=reject',
+  `lama_masa_aktif_promo` int(11) DEFAULT NULL,
+  `qty_paket` int(11) DEFAULT NULL,
+  `harga_satuan` int(11) DEFAULT NULL,
+  `total_harga_unix` int(11) DEFAULT NULL COMMENT 'harga asli - unix kode= karena tidak ada dompet',
+  `slot_iklan` int(11) DEFAULT NULL,
+  `waktu_konfirmasi` datetime DEFAULT NULL,
   `id_admin` bigint(20) DEFAULT NULL,
+  `status_verifikasi` int(1) DEFAULT 0 COMMENT '0=pending; 1=sukses; 2=reject',
   `create_at` datetime DEFAULT NULL,
   `update_at` datetime DEFAULT NULL,
+  `id_member` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id_toko_promo`),
-  KEY `id_toko_produk_member` (`id_toko_produk_member`),
   KEY `id_paket_promo` (`id_paket_promo`),
   KEY `id_bank` (`id_bank`),
   KEY `id_admin` (`id_admin`),
-  CONSTRAINT `t_promo_toko_produk_member_ibfk_1` FOREIGN KEY (`id_toko_produk_member`) REFERENCES `m_toko_produk_member` (`id_toko_produk_member`),
+  KEY `id_member` (`id_member`),
   CONSTRAINT `t_promo_toko_produk_member_ibfk_2` FOREIGN KEY (`id_paket_promo`) REFERENCES `m_paket_promo` (`id_paket_promo`),
   CONSTRAINT `t_promo_toko_produk_member_ibfk_3` FOREIGN KEY (`id_bank`) REFERENCES `m_bank` (`id_bank`),
-  CONSTRAINT `t_promo_toko_produk_member_ibfk_4` FOREIGN KEY (`id_admin`) REFERENCES `m_admin` (`id_admin`)
+  CONSTRAINT `t_promo_toko_produk_member_ibfk_4` FOREIGN KEY (`id_admin`) REFERENCES `m_admin` (`id_admin`),
+  CONSTRAINT `t_promo_toko_produk_member_ibfk_5` FOREIGN KEY (`id_member`) REFERENCES `m_member` (`id_member`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 /*Data for the table `t_promo_toko_produk_member` */
@@ -88339,258 +88407,7 @@ insert  into `villages`(`id`,`district_id`,`name`) values
 ('9433081006','9433081','FOKRI'),
 ('9433081007','9433081','DERVOS'),
 ('9434010001','9434010','SUKIKAI'),
-('9434010002','9434010','WIGOUMAKIDA'),
-('9434010003','9434010','IYARO'),
-('9434010004','9434010','UNITO'),
-('9434020001','9434020','YEGIYEPA'),
-('9434020002','9434020','APOGOMAKIDA'),
-('9434020003','9434020','DENIYODE'),
-('9434020004','9434020','UKAGU'),
-('9434020005','9434020','KEGATA'),
-('9434020006','9434020','EGIPA'),
-('9434020007','9434020','IDEDUWA'),
-('9434020008','9434020','TIPAUGI'),
-('9434030001','9434030','TOUBAIKEBO'),
-('9434030002','9434030','ABOUYAGA'),
-('9434030003','9434030','MAIKOTU'),
-('9434030004','9434030','YEGOUKOTU'),
-('9434040001','9434040','MEGAIKEBO'),
-('9434040003','9434040','TIMEPA'),
-('9434040004','9434040','MODIO'),
-('9434040005','9434040','PUTAPA'),
-('9434040006','9434040','TUAMANI / ATOU'),
-('9434040007','9434040','ADAUWO'),
-('9434040008','9434040','GABAUKUNU'),
-('9434040009','9434040','UKUDAWATA / UPIBEGA'),
-('9434040010','9434040','BONAKUNU'),
-('9434050001','9434050','ABAIMAIDA'),
-('9434050002','9434050','BOMOMANI'),
-('9434050003','9434050','GAPOYA'),
-('9434050004','9434050','DIYOUDIMI'),
-('9434050005','9434050','ABAUGI / OBAIKAGOPA'),
-('9434050006','9434050','MAGODE'),
-('9434050007','9434050','DAWAIKUNU'),
-('9434060001','9434060','ABGOIGI / DIGIMANI'),
-('9434060002','9434060','BOBOBUTU'),
-('9434060004','9434060','PONA'),
-('9434060005','9434060','MAKIDIMI'),
-('9434060006','9434060','IDADAGI'),
-('9434060007','9434060','MOTITO'),
-('9434060008','9434060','DENEMANI'),
-('9434060009','9434060','KIGAMANI'),
-('9434070001','9434070','BOGOYA TEUGI'),
-('9434070002','9434070','BOTUMOMA'),
-('9434070003','9434070','PUWETA II'),
-('9434070004','9434070','MATADI'),
-('9434070005','9434070','PUWETA I'),
-('9434070006','9434070','DIGIKEBO'),
-('9434070007','9434070','OBAIBEGA'),
-('9434070008','9434070','POUWOUDA'),
-('9434070009','9434070','UGIKEBO'),
-('9434070010','9434070','TUWAIDA'),
-('9434070011','9434070','UGIKAGOUDA'),
-('9434070012','9434070','MAKIDIMI / YEPO'),
-('9434080001','9434080','MOANEMANI/ IKEBO'),
-('9434080002','9434080','BUKAPA'),
-('9434080003','9434080','MAUWA'),
-('9434080004','9434080','EKEMANIDA'),
-('9434080006','9434080','PUTAPA'),
-('9434080007','9434080','TOKAPO / DIKIYOUWA'),
-('9434080008','9434080','IDAKOTU'),
-('9434090001','9434090','BUNAUWO'),
-('9434090002','9434090','YOTAPUGA'),
-('9434090003','9434090','UGAPUGA'),
-('9434090004','9434090','BODUDA'),
-('9434090005','9434090','NUWA'),
-('9434090006','9434090','BOKAIBUTU'),
-('9434090007','9434090','DEIYAPA'),
-('9434100001','9434100','IDAKEBO'),
-('9434100002','9434100','PUGATADI II'),
-('9434100003','9434100','PUGATADI I'),
-('9434100004','9434100','IKRAR'),
-('9434100005','9434100','OBAYO'),
-('9434100006','9434100','KUYAKAGO'),
-('9434100007','9434100','YAMETADI'),
-('9434100008','9434100','MOGOU'),
-('9434100010','9434100','EKIMANI'),
-('9435010001','9435010','MAPA'),
-('9435010002','9435010','BILAI DUA'),
-('9435010003','9435010','MAYA'),
-('9435010004','9435010','DEGESIGA'),
-('9435010005','9435010','POGAPA'),
-('9435010006','9435010','BILAI I'),
-('9435010007','9435010','ZOMBAN DOGA'),
-('9435010008','9435010','KOBAE'),
-('9435010009','9435010','SELEMAMA'),
-('9435010010','9435010','KENDETAPA'),
-('9435010011','9435010','HIYABU'),
-('9435010012','9435010','BONOGO'),
-('9435010013','9435010','OGEAPA'),
-('9435010014','9435010','ENGGANENGA'),
-('9435010015','9435010','AGAPA'),
-('9435010016','9435010','WAIAGEPA'),
-('9435010017','9435010','BUBISIGA'),
-('9435010018','9435010','HUGITAPA'),
-('9435020001','9435020','EMONDI'),
-('9435020002','9435020','MINDAU'),
-('9435020003','9435020','UGIMBA'),
-('9435020004','9435020','YOPARU'),
-('9435020005','9435020','MAMBA'),
-('9435020006','9435020','YOKATAPA'),
-('9435020007','9435020','BILOGAI'),
-('9435020008','9435020','PUYAGIYA'),
-('9435020009','9435020','YALAI'),
-('9435020010','9435020','DEGEYABU/BUWISIGA'),
-('9435020011','9435020','MBILUSIGA'),
-('9435020012','9435020','WANDOGA'),
-('9435020013','9435020','KUMLAGUPA'),
-('9435020014','9435020','EKNEMBA / ELENEMBA'),
-('9435020016','9435020','NDUGUSIGA'),
-('9435030001','9435030','SANABA'),
-('9435030004','9435030','KULAPA'),
-('9435030005','9435030','WABUI'),
-('9435030006','9435030','SOAGAMA'),
-('9435030007','9435030','HITADIPA'),
-('9435030008','9435030','DANGGOMBA'),
-('9435030009','9435030','BALAIMAI'),
-('9435030010','9435030','PUGISIGA'),
-('9435040001','9435040','AGISIGA'),
-('9435040002','9435040','TOUSIGA'),
-('9435040005','9435040','UNABUNDAGA'),
-('9435040006','9435040','MBAMOGO'),
-('9435040007','9435040','SOALI'),
-('9435040008','9435040','DANGGOA'),
-('9435040009','9435040','TOMOSIGA'),
-('9435040010','9435040','KOMBOGISIGA'),
-('9435040011','9435040','TEMBAGE'),
-('9435040012','9435040','DAPIAGA'),
-('9435040013','9435040','BIGASIGA'),
-('9435040014','9435040','JANASIGA'),
-('9435050001','9435050','DANGGATADI'),
-('9435050002','9435050','BIANDOGA'),
-('9435050003','9435050','BUGALAGA'),
-('9435050004','9435050','YAGAITO'),
-('9435050005','9435050','KALAWA'),
-('9435050006','9435050','YANEI'),
-('9435050007','9435050','PAGAMBA'),
-('9435050008','9435050','ULAR MERAH'),
-('9435050009','9435050','NDABATADI'),
-('9435050010','9435050','ANEYA/GITAWA'),
-('9435050011','9435050','EDAGITADI'),
-('9435050012','9435050','KIGITADI'),
-('9435050013','9435050','MAODAGI'),
-('9435050014','9435050','MANIWO'),
-('9435050015','9435050','MBIATAPA'),
-('9435060001','9435060','SABISA'),
-('9435060002','9435060','JAE'),
-('9435060003','9435060','DEBASIGA I'),
-('9435060004','9435060','DEBASIGA II'),
-('9435060005','9435060','ISANDOGA'),
-('9435060006','9435060','MOGALO'),
-('9435060007','9435060','MBUGULO'),
-('9435060008','9435060','DUBASIGA'),
-('9435060009','9435060','HULAGUPA'),
-('9436010001','9436010','KOMAUTO'),
-('9436010002','9436010','MOGODAGI'),
-('9436010003','9436010','YAMOUWITINA'),
-('9436010004','9436010','IDEEGO'),
-('9436010005','9436010','UWE ONAGEI'),
-('9436020001','9436020','WIDUWAKIYA'),
-('9436020002','9436020','DIGIBAGATA'),
-('9436020003','9436020','AYATEI'),
-('9436020004','9436020','DIYAI'),
-('9436020005','9436020','ONAGO'),
-('9436020006','9436020','TENEDAGI'),
-('9436020007','9436020','GAKOKEBO'),
-('9436020009','9436020','YINUDOBA'),
-('9436020010','9436020','PIYAKEDIMI'),
-('9436020011','9436020','WAGOMANI'),
-('9436020012','9436020','DEMAGO'),
-('9436020013','9436020','YIPAI'),
-('9436020014','9436020','DIYAI II'),
-('9436020015','9436020','ONAGO II'),
-('9436020016','9436020','MEYEPA'),
-('9436020017','9436020','KOGEMANI'),
-('9436020018','9436020','YAGU'),
-('9436020019','9436020','OBAI'),
-('9436020020','9436020','EPANAI'),
-('9436020021','9436020','DIGIKOTU'),
-('9436020022','9436020','MAATADI'),
-('9436030001','9436030','BOMOU'),
-('9436030002','9436030','BOMOU II'),
-('9436030003','9436030','YABA'),
-('9436030004','9436030','WAGHETE I'),
-('9436030005','9436030','WAGHETE II'),
-('9436030006','9436030','OKOMOKEBO'),
-('9436030007','9436030','UGIYA'),
-('9436030008','9436030','ONEIBO'),
-('9436030009','9436030','MOTANO'),
-('9436030010','9436030','BOMOU III'),
-('9436030011','9436030','AMAGO'),
-('9436030013','9436030','YABA II'),
-('9436030014','9436030','MUGOUDA'),
-('9436030015','9436030','ATOUDA'),
-('9436030016','9436030','IKIYAUWO'),
-('9436030018','9436030','OKOMOTADI'),
-('9436030019','9436030','BUWOUDIMI'),
-('9436030020','9436030','IBODIYO'),
-('9436040001','9436040','KOKOBAYA'),
-('9436040002','9436040','DAKEBO'),
-('9436040003','9436040','WATIYAI'),
-('9436040004','9436040','EDAGOTADI'),
-('9436040005','9436040','DAGOKEBO'),
-('9436040006','9436040','DAMABAGATA'),
-('9436040007','9436040','BAGOU'),
-('9436040008','9436040','WAITAKOTU'),
-('9436040009','9436040','PEKEPA'),
-('9436040010','9436040','BAGUMOMA'),
-('9436040011','9436040','IPOKEUGIDA'),
-('9436040012','9436040','IDAIYODAGI'),
-('9436040013','9436040','UDAUGIDA'),
-('9436040014','9436040','BAGOU II'),
-('9436050001','9436050','KOPAI'),
-('9436050002','9436050','KOPAI II'),
-('9436050003','9436050','WOOGE'),
-('9436050004','9436050','DIITA'),
-('9436050005','9436050','YEWADIDE'),
-('9436050006','9436050','MUDETADI'),
-('9471010001','9471010','KOYA BARAT'),
-('9471010002','9471010','HOLTEKAM'),
-('9471010003','9471010','SKOW YAMBE'),
-('9471010004','9471010','KOYA TIMUR'),
-('9471010005','9471010','SKOW MABO'),
-('9471010006','9471010','SKOW SAE'),
-('9471010007','9471010','KOYA TENGAH'),
-('9471010008','9471010','KAMPUNG MOSSO'),
-('9471020004','9471020','ASANO'),
-('9471020005','9471020','NAFRI'),
-('9471020006','9471020','ENGROS'),
-('9471020008','9471020','AWIYO'),
-('9471020009','9471020','KOYA KOSO'),
-('9471020010','9471020','YOBE'),
-('9471020011','9471020','ABE PANTAI'),
-('9471020012','9471020','KOTA BARU'),
-('9471020014','9471020','WAI MHOROCK'),
-('9471020015','9471020','WAHNO'),
-('9471021001','9471021','YOKA'),
-('9471021002','9471021','KAMPUNG WAENA'),
-('9471021003','9471021','HEDAM'),
-('9471021005','9471021','WAENA'),
-('9471021006','9471021','YABANSAI'),
-('9471030002','9471030','ENTROP'),
-('9471030003','9471030','TOBATI'),
-('9471030004','9471030','HAMADI'),
-('9471030005','9471030','ARDIPURA'),
-('9471030006','9471030','NUMBAI'),
-('9471030007','9471030','ARGAPURA'),
-('9471030008','9471030','TAHIMA SOROMA'),
-('9471040001','9471040','GURABESI'),
-('9471040002','9471040','BAYANGKARA'),
-('9471040003','9471040','MANDALA'),
-('9471040004','9471040','TRIKORA'),
-('9471040005','9471040','ANGKASAPURA'),
-('9471040007','9471040','TANJUNG RIA'),
-('9471040008','9471040','KAMPUNG KAYOBATU');
+('9434010002','9434010','WIGOUMAKIDA');
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

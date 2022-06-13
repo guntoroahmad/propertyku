@@ -90,6 +90,12 @@ class M_properti extends CI_Model
 		return $this->db->query($sql);
 	}
 
+	function tabel_sosial_media()
+	{
+		$sql = "SELECT * FROM m_sosial_media WHERE delete_at IS NULL;";
+		return $this->db->query($sql);
+	}
+
 	function cek_data_properti($nama_properti)
 	{
 		$sql = "SELECT * FROM m_toko_produk_member WHERE nama_properti = '{$nama_properti}' AND status = 1;";
@@ -126,6 +132,12 @@ class M_properti extends CI_Model
 		return $this->db->insert_id();
 	}
 
+	function simpan_sosmed($data)
+	{
+		$this->db->insert('m_sosial_media', $data);
+		return $this->db->insert_id();
+	}
+
 	function get_properti_edit($id_edit)
 	{
 		$sql = "SELECT * FROM m_toko_produk_member WHERE id_toko_produk_member='{$id_edit}';";
@@ -147,6 +159,12 @@ class M_properti extends CI_Model
 	function get_sertifikat_edit($id_edit)
 	{
 		$sql = "SELECT * FROM m_sertifikat WHERE id_sertifikat='{$id_edit}';";
+		return $this->db->query($sql);
+	}
+
+	function get_sosmed_edit($id_edit)
+	{
+		$sql = "SELECT * FROM m_sosial_media WHERE id='{$id_edit}';";
 		return $this->db->query($sql);
 	}
 
@@ -198,6 +216,12 @@ class M_properti extends CI_Model
 		return $this->db->update('m_sertifikat', $data);
 	}
 
+	function update_sosmed($id, $data)
+	{
+		$this->db->where('id', $id);
+		return $this->db->update('m_sosial_media', $data);
+	}
+
 	function hapus_tipe($id, $data)
 	{
 		$this->db->where('id_tipe_properti', $id);
@@ -214,6 +238,12 @@ class M_properti extends CI_Model
 	{
 		$this->db->where('id_sertifikat', $id);
 		return $this->db->update('m_sertifikat', $data);
+	}
+
+	function hapus_sosmed($id, $data)
+	{
+		$this->db->where('id', $id);
+		return $this->db->update('m_sosial_media', $data);
 	}
 
 	/* function simpan_permintaan_barang($data)

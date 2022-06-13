@@ -69,6 +69,16 @@ class Properti extends CI_Controller
 		$this->load->view("temp/v_foot");
 	}
 
+	public function sosial_media()
+	{
+		// $NIK = $_SESSION['ses_id'];
+		$this->load->view("temp/v_head");
+		$this->load->view("temp/v_menubar");
+		$this->load->view("temp/v_navbar");
+		$this->load->view("v_sosialmedia");
+		$this->load->view("temp/v_foot");
+	}
+
 	function tabel_properti()
 	{
 		$this->load->model('M_properti');
@@ -156,6 +166,29 @@ class Properti extends CI_Controller
 			$data[$no][1] = $row->nama_sertifikat;
 			$data[$no][2] = '<button type="button" class="btn btn-warning btn-round" id="mod_sertifikat_edit" data-id="' . $row->id_sertifikat . '">Ubah</button>
                                 <button type="button" class="btn btn-danger btn-round" id="mod_sertifikat_del" data-id="' . $row->id_sertifikat . '">Hapus</button>';
+			$no++;
+		}
+		$kirim = array(
+			"data" => $data
+		);
+		$this->output->set_content_type('application/json')->set_output(json_encode($kirim));
+	}
+
+	function tabel_sosial_media()
+	{
+		$this->load->model('M_properti');
+		/* $nama = $_SESSION['nama'];*/
+		$query = $this->M_properti->tabel_sosial_media();
+		$data = array();
+		$no = 0;
+		// $status = '';
+		foreach ($query->result() as $row) {
+
+			$data[$no][0] = $no + 1;
+			$data[$no][1] = $row->nama_sosmed;
+			$data[$no][2] = $row->url_sosmed;
+			$data[$no][3] = '<button type="button" class="btn btn-warning btn-round" id="mod_sosmed_edit" data-id="' . $row->id . '">Ubah</button>
+                                <button type="button" class="btn btn-danger btn-round" id="mod_sosmed_del" data-id="' . $row->id . '">Hapus</button>';
 			$no++;
 		}
 		$kirim = array(
@@ -466,6 +499,34 @@ class Properti extends CI_Controller
 			->set_output(json_encode($kirim));
 	}
 
+	function simpan_sosmed()
+	{
+		$this->load->model('m_properti');
+		$nama_sosmed = $this->input->post('nama_sosmed');
+		$url_sosmed = $this->input->post('url_sosmed');
+		$data = array();
+
+		$data = array(
+			"nama_sosmed" => $nama_sosmed,
+			"url_sosmed" => $url_sosmed,
+			"create_at" => date("Y-m-d H:i:s")
+		);
+		// print_r($data);exit();
+		$query = $this->m_properti->simpan_sosmed($data);
+
+		if ($query) {
+			$sts = "ok";
+		} else {
+			$sts = "Gagal Simpan Data";
+		}
+
+		$kirim = array(
+			"sts" => $sts
+		);
+		$this->output->set_content_type('application/json')
+			->set_output(json_encode($kirim));
+	}
+
 	function baca_properti_edit()
 	{
 		$this->load->model('M_properti');
@@ -550,6 +611,20 @@ class Properti extends CI_Controller
 		$this->output->set_content_type('application/json')->set_output(json_encode($data));
 	}
 
+	function baca_sosmed_edit()
+	{
+		$this->load->model('M_properti');
+		$id_edit = $this->input->post("id_edit");
+		$query = $this->M_properti->get_sosmed_edit($id_edit);
+		$data = array();
+		foreach ($query->result() as $row) {
+			$data[0] = $row->id;
+			$data[1] = $row->nama_sosmed;
+			$data[2] = $row->url_sosmed;
+		}
+		$this->output->set_content_type('application/json')->set_output(json_encode($data));
+	}
+
 	function simpan_properti_edit()
 	{
 		$this->load->model('M_properti');
@@ -575,7 +650,7 @@ class Properti extends CI_Controller
 		$harga = $this->input->post("ed_harga");
 		$deskripsi = $this->input->post("ed_deskripsi");
 		$sts = "";
-		    //    print_r($id_edit);exit();
+		//    print_r($id_edit);exit();
 		$cek_properti = $this->M_properti->cek_properti_edit(addslashes($nama_properti), $id_edit);
 		if ($cek_properti->num_rows() > 0) {
 			$sts = "Nama Property sudah ada";
@@ -752,6 +827,32 @@ class Properti extends CI_Controller
 			->set_output(json_encode($kirim));
 	}
 
+	function simpan_sosmed_edit()
+	{
+		$this->load->model('M_properti');
+		$id_edit = $this->input->post("id_edit");
+		$url_sosmed = $this->input->post('ed_url_sosmed');
+		$data = array();
+
+		$data = array(
+			"url_sosmed" => $url_sosmed,
+			"update_at" => date("Y-m-d H:i:s")
+		);
+
+		$query = $this->M_properti->update_sosmed($id_edit, $data);
+		if ($query) {
+			$sts = "ok";
+		} else {
+			$sts = "Gagal Simpan Data";
+		}
+
+		$kirim = array(
+			"sts" => $sts
+		);
+		$this->output->set_content_type('application/json')
+			->set_output(json_encode($kirim));
+	}
+
 	function hapus_foto($id)
 	{
 		$this->load->model("M_gambar_properti");
@@ -816,6 +917,28 @@ class Properti extends CI_Controller
 		);
 
 		$query = $this->M_properti->hapus_sertifikat($id_hapus, $data);
+		if ($query) {
+			$sts = "ok";
+		} else {
+			$sts = "Gagal Simpan Data";
+		}
+
+		$kirim = array(
+			"sts" => $sts
+		);
+		$this->output->set_content_type('application/json')
+			->set_output(json_encode($kirim));
+	}
+
+	public function hapus_sosmed()
+	{
+		$this->load->model('M_properti');
+		$id_hapus = $this->input->post("id_hapus");
+		$data = array(
+			"delete_at" => date("Y-m-d H:i:s")
+		);
+
+		$query = $this->M_properti->hapus_sosmed($id_hapus, $data);
 		if ($query) {
 			$sts = "ok";
 		} else {
