@@ -57,11 +57,6 @@ defined('BASEPATH') or exit('No direct script access allowed');
 	<script src="<?php echo base_url(); ?>assets/js/dataTables.responsive.min.js"></script>
 	<script src="<?php echo base_url(); ?>assets/js/responsive.bootstrap4.min.js"></script>
 	<script src="<?php echo base_url(); ?>assets/data-table/jquery-datatables-checkboxes/js/dataTables.checkboxes.min.js"></script>
-	<!-- Optional JS -->
-	<script src="<?php echo base_url(); ?>assets/vendor/chart.js/dist/Chart.min.js"></script>
-	<script src="<?php echo base_url(); ?>assets/vendor/chart.js/dist/Chart.extension.js"></script>
-	<!-- Argon JS -->
-	<script src="<?php echo base_url(); ?>assets/js/argon.js?v=1.2.0"></script>
 </head>
 
 <body style="font-size:px;">
