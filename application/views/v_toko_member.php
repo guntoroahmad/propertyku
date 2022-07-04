@@ -8,12 +8,12 @@ defined('BASEPATH') or exit('No direct script access allowed');
 		<div class="header-body">
 			<div class="row align-items-center py-4">
 				<div class="col-lg-6 col-7">
-					<h6 class="h2 text-white d-inline-block mb-0">Sosial Media</h6>
+					<h6 class="h2 text-white d-inline-block mb-0">Toko Member</h6>
 					<nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
 						<ol class="breadcrumb breadcrumb-links breadcrumb-dark">
 							<li class="breadcrumb-item"><a href="<?php echo base_url(); ?>home"><i class="fas fa-home"></i></a></li>
 							<!-- <li class="breadcrumb-item"><a href="#"></a></li> -->
-							<li class="breadcrumb-item active" aria-current="page">Sosial Media</li>
+							<li class="breadcrumb-item active" aria-current="page">Toko Member</li>
 						</ol>
 					</nav>
 				</div>
@@ -33,7 +33,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 				<div class="card-header">
 					<div class="row align-items-center">
 						<div class="col-8">
-							<h2 class="mb-0">Sosial Media</h2>
+							<h2 class="mb-0">List User</h2>
 						</div>
 						<!-- <div class="col-4 text-right">
 							<a href="#!" class="btn btn-sm btn-primary">Settings</a>
@@ -45,14 +45,10 @@ defined('BASEPATH') or exit('No direct script access allowed');
 						<div class="row">
 							<div class="col-md-12">
 								<p>
-									<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#mod_tambah_sosmed" hidden>
-										Tambah Sosial Media
+									<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#mod_tambah_toko">
+										Tambah Toko Member
 										<i class="ni ni-fat-add"></i>
 									</button>
-									<!-- <button type="button" class="btn btn-primary" id="push_stok">
-										Push
-										<i class="ni ni-fat-add"></i>
-									</button> -->
 								</p>
 							</div>
 						</div>
@@ -60,7 +56,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 							<div class="col-md-12 col-sm-12 col-xs-12">
 								<div class="card">
 									<div class="card-header">
-										<h3 class="title">List Sosial Media</h3>
+										<h3 class="title">List Toko Member</h3>
 									</div>
 									<div class="card-body">
 										<div>
@@ -68,8 +64,8 @@ defined('BASEPATH') or exit('No direct script access allowed');
 												<thead>
 													<tr>
 														<th>No</th>
-														<th>Sosial Media</th>
-														<th>URL</th>
+														<th>Nama Toko</th>
+														<th>Alamat</th>
 														<th>Aksi</th>
 													</tr>
 												</thead>
@@ -86,29 +82,43 @@ defined('BASEPATH') or exit('No direct script access allowed');
 			</div>
 		</div>
 
-		<!-- Modal Tambah Tipe-->
-		<div class="modal fade" id="mod_tambah_sosmed" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<!-- Modal Tambah Toko Member-->
+		<div class="modal fade" id="mod_tambah_toko" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 			<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title" id="exampleModalLabel">Tambah Sosial Media</h5>
+						<h5 class="modal-title" id="exampleModalLabel">Tambah Toko Member</h5>
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
 					</div>
 					<div class="modal-body">
-						<form id="f_tambah_sosmed" method="post">
+						<form id="f_tambah_toko" method="post">
 							<div class="row">
-								<div class="col-lg-6 col-md-12 col-sm-12">
+								<div class="col-lg-4 col-md-12 col-sm-12">
 									<div class="form-group">
-										<label class="form-control-label" for="input-username">Sosial Media</label>
-										<input type="text" id="nama_sosmed" name="nama_sosmed" class="form-control" placeholder="Sosial Media">
+										<label class="form-control-label" for="input-username">Nama</label>
+										<input type="text" id="nama_toko" name="nama_toko" class="form-control" placeholder="Nama Toko" autocomplete="off">
 									</div>
 								</div>
-								<div class="col-lg-6 col-md-12 col-sm-12">
+								<div class="col-lg-4 col-md-12 col-sm-12">
 									<div class="form-group">
-										<label class="form-control-label" for="input-username">URL</label>
-										<input type="text" id="url_sosmed" name="url_sosmed" class="form-control" placeholder="URL Sosial Media">
+										<label class="form-control-label" for="input-username">Latitude</label>
+										<input type="text" id="lat_toko" name="lat_toko" class="form-control" placeholder="ex: -7.315850544192772">
+									</div>
+								</div>
+								<div class="col-lg-4 col-md-12 col-sm-12">
+									<div class="form-group">
+										<label class="form-control-label" for="input-username">Longitude</label>
+										<input type="text" id="long_toko" name="long_toko" class="form-control" placeholder="ex: 112.73069074995117">
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-lg-12 col-md-12 col-sm-12">
+									<div class="form-group">
+										<label class="form-control-label" for="input-last-name">Alamat Toko</label>
+										<textarea type="text" id="alamat_toko" name="alamat_toko" class="form-control" placeholder="Alamat Toko ..." autocomplete="off" rows="3"></textarea>
 									</div>
 								</div>
 							</div>
@@ -122,30 +132,44 @@ defined('BASEPATH') or exit('No direct script access allowed');
 			</div>
 		</div>
 
-		<!-- Modal Edit Tipe Properti-->
-		<div class="modal fade mod_edit_sosmed" id="mod_edit_sosmed" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<!-- Modal Edit User-->
+		<div class="modal fade mod_edit_toko" id="mod_edit_toko" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 			<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title" id="exampleModalLabel">Edit Sosial Media</h5>
+						<h5 class="modal-title" id="exampleModalLabel">Edit Toko</h5>
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
 					</div>
 					<div class="modal-body">
-						<form id="f_edit_sosmed" method="post">
+						<form id="f_edit_toko" method="post">
 							<input type="hidden" name="id_edit" class="edit">
 							<div class="row">
-								<div class="col-lg-6 col-md-12 col-sm-12">
+								<div class="col-lg-4 col-md-12 col-sm-12">
 									<div class="form-group">
-										<label class="form-control-label" for="input-username">Sosial Media</label>
-										<input type="text" id="ed_nama_sosmed" name="ed_nama_sosmed" class="form-control" placeholder="Sosial Media" readonly>
+										<label class="form-control-label" for="input-username">Nama</label>
+										<input type="text" id="ed_nama_toko" name="ed_nama_toko" class="form-control" placeholder="Nama Toko" autocomplete="off">
 									</div>
 								</div>
-								<div class="col-lg-6 col-md-12 col-sm-12">
+								<div class="col-lg-4 col-md-12 col-sm-12">
 									<div class="form-group">
-										<label class="form-control-label" for="input-username">URL</label>
-										<input type="text" id="ed_url_sosmed" name="ed_url_sosmed" class="form-control" placeholder="URL Sosial Media">
+										<label class="form-control-label" for="input-username">Latitude</label>
+										<input type="text" id="ed_lat_toko" name="ed_lat_toko" class="form-control" placeholder="ex: -7.315850544192772">
+									</div>
+								</div>
+								<div class="col-lg-4 col-md-12 col-sm-12">
+									<div class="form-group">
+										<label class="form-control-label" for="input-username">Longitude</label>
+										<input type="text" id="ed_long_toko" name="ed_long_toko" class="form-control" placeholder="ex: 112.73069074995117">
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-lg-12 col-md-12 col-sm-12">
+									<div class="form-group">
+										<label class="form-control-label" for="input-last-name">Alamat Toko</label>
+										<textarea type="text" id="ed_alamat_toko" name="ed_alamat_toko" class="form-control" placeholder="Alamat Toko ..." autocomplete="off" rows="3"></textarea>
 									</div>
 								</div>
 							</div>
@@ -159,12 +183,12 @@ defined('BASEPATH') or exit('No direct script access allowed');
 			</div>
 		</div>
 
-		<!-- Modal Hapus Produk -->
-		<div class="modal fade mod_hapus_sosmed" id="mod_hapus_sosmed" tabindex="-1" role="dialog" aria-labelledby="modal-notification" aria-hidden="true">
+		<!-- Modal Hapus User -->
+		<div class="modal fade mod_hapus_toko" id="mod_hapus_toko" tabindex="-1" role="dialog" aria-labelledby="modal-notification" aria-hidden="true">
 			<div class="modal-dialog modal-danger modal-dialog-centered modal-" role="document">
 				<div class="modal-content bg-gradient-danger">
 					<div class="modal-header">
-						<h6 class="modal-title" id="modal-title-notification">Hapus Sosial Media</h6>
+						<h6 class="modal-title" id="modal-title-notification">Hapus Toko</h6>
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">×</span>
 						</button>
@@ -172,7 +196,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 					<div class="modal-body">
 						<div class="py-3 text-center">
 							<i class="ni ni-bell-55 ni-3x"></i>
-							<h4 class="heading mt-4">Anda yakin menghapus sosmed ini ?</h4>
+							<h4 class="heading mt-4">Anda yakin menghapus toko ini ?</h4>
 							<!-- <p>A small river named Duden flows by their place and supplies it with the necessary regelialia.</p> -->
 						</div>
 					</div>
@@ -187,17 +211,17 @@ defined('BASEPATH') or exit('No direct script access allowed');
 	<script type="text/javascript">
 		var dt_table = $("#datatable-responsive").DataTable();
 		$(document).ready(function() {
-			tampil_sosmed();
-			tampil_modal_edit();
-			simpan_sosmed();
+			tampil_toko();
+			// tampil_kordinator();
+			simpan_toko();
 		});
 
-		// TAMPIL TABEL JENIS SOSMED
-		function tampil_sosmed() {
+		// TAMPIL TABEL TOKO
+		function tampil_toko() {
 			dt_table.destroy();
 			dt_table = $("#datatable-responsive").DataTable({
 				ajax: {
-					url: ip_server + "properti/tabel_sosial_media",
+					url: ip_server + "admin/tabel_toko",
 					type: "post"
 				},
 				lengthMenu: [
@@ -213,38 +237,47 @@ defined('BASEPATH') or exit('No direct script access allowed');
 					null,
 					null,
 					null
-					/*
-					{
+					/* {
 						"width": "250px"
 					} */
 				],
-				responsive: true,
 				processing: true,
+				responsive: true,
 				fixedHeader: true
 			});
 		}
 
-		// SIMPAN SOSMED
-		function simpan_sosmed() {
+		// SIMPAN TOKO
+		function simpan_toko() {
 			$('#btn_simpan').on('click', function() {
 				var btn = $(this);
 
-				if ($("#nama_sosmed").val() == "") {
-					toastr.error("Nama Sosial Media belum di isi", 'INFO');
+				if ($("#nama_toko").val() == "") {
+					toastr.error("Nama Toko belum di isi", 'INFO');
 					return false;
 				};
 
-				if ($("#url_sosmed").val() == "") {
-					toastr.error("URL belum di isi", 'INFO');
+				if ($("#lat_toko").val() == "") {
+					toastr.error("Latittude belum di isi", 'INFO');
 					return false;
 				};
 
-				var formnya = $("#f_tambah_sosmed")[0];
+				if ($("#long_toko").val() == "") {
+					toastr.error("Longitude belum di isi", 'INFO');
+					return false;
+				};
+
+				if ($("#alamat_toko").val() == "") {
+					toastr.error("Alamat belum di isi", 'INFO');
+					return false;
+				};
+
+				var formnya = $("#f_tambah_toko")[0];
 				var Data_tambah = new FormData(formnya);
 				btn.button('loading');
 
 				$.ajax({
-					url: ip_server + "properti/simpan_sosmed",
+					url: ip_server + "admin/simpan_toko",
 					type: "POST",
 					data: Data_tambah,
 					dataType: "json",
@@ -255,9 +288,10 @@ defined('BASEPATH') or exit('No direct script access allowed');
 						if (out.sts == "ok") {
 							toastr.success("Berhasil", 'INFO');
 							dt_table.ajax.reload(null, false);
-							$('#mod_tambah_sosmed').modal('hide');
-							$("#nama_sosmed").val("");
-							$("#url_sosmed").val("");
+							$('#mod_tambah_toko').modal('hide');
+							$("#lat_toko").val("");
+							$("#long_toko").val("");
+							$("#alamat_toko").val("");
 						} else {
 							toastr.error(out.sts, 'INFO');
 						}
@@ -271,44 +305,60 @@ defined('BASEPATH') or exit('No direct script access allowed');
 			});
 		}
 
-		// TAMPIL EDIT SOSMED
-		function tampil_modal_edit() {
-			$('#datatable-responsive').on("click", "#mod_sosmed_edit", function() {
-				var id = $(this).data("id");
-				// alert(id);return false;
-				var mdl = $(".mod_edit_sosmed");
-				var btn = $(this);
-				// mdl.modal("show");
-				$("#f_edit_sosmed")[0].reset();
-				btn.button('loading');
-				mdl.find(".edit").val(id);
+		// TAMPIL EDIT TOKO
+		$('#datatable-responsive').on("click", "#toko_edit", function() {
+			var id = $(this).data("id");
+			// alert(id);return false;
+			var mdl = $(".mod_edit_toko");
+			var btn = $(this);
+			// mdl.modal("show");
+			$("#f_edit_toko")[0].reset();
+			btn.button('loading');
+			mdl.find(".edit").val(id);
 
-				$.post(ip_server + "properti/baca_sosmed_edit", {
-					id_edit: id
-				}, function(out) {
-					btn.button('reset');
-					$("[name=id_edit]").val(out[0]);
-					$("[name=ed_nama_sosmed]").val(out[1]);
-					$("[name=ed_url_sosmed]").val(out[2]);
-					mdl.modal("show");
-				}, "json");
-			});
-		}
+			$.post(ip_server + "admin/baca_toko_edit", {
+				id_edit: id
+			}, function(out) {
 
-		// SIMPAN EDIT SOSMED
+				btn.button('reset');
+				$("[name=id_edit]").val(out[0]);
+				$("[name=ed_nama_toko]").val(out[1]);
+				$("[name=ed_long_toko]").val(out[2]);
+				$("[name=ed_lat_toko]").val(out[3]);
+				$("[name=ed_alamat_toko]").val(out[4]);
+				mdl.modal("show");
+			}, "json");
+		});
+
+		// SIMPAN EDIT USER
 		$('#btn_simpan_edit').on("click", function() {
 			var btn = $(this);
 
-			if ($("#ed_nama_sosmed").val() == "") {
-				toastr.error("Nama Sosial Media belum di isi", 'INFO');
+			if ($("#ed_nama_toko").val() == "") {
+				toastr.error("Nama Toko belum di isi", 'INFO');
 				return false;
 			};
 
-			var formnya = $("#f_edit_sosmed")[0];
+			if ($("#ed_lat_toko").val() == "") {
+				toastr.error("Latittude belum di isi", 'INFO');
+				return false;
+			};
+
+			if ($("#ed_long_toko").val() == "") {
+				toastr.error("Longitude belum di isi", 'INFO');
+				return false;
+			};
+
+			if ($("#ed_alamat_toko").val() == "") {
+				toastr.error("Alamat belum di isi", 'INFO');
+				return false;
+			};
+
+			var formnya = $("#f_edit_toko")[0];
 			var Data_tambah = new FormData(formnya);
 			btn.button('loading');
 			$.ajax({
-				url: ip_server + "properti/simpan_sosmed_edit",
+				url: ip_server + "admin/simpan_toko_edit",
 				type: "POST",
 				data: Data_tambah,
 				dataType: "json",
@@ -319,7 +369,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 					if (out.sts == "ok") {
 						toastr.success("Ubah Sukses", 'INFO');
 						dt_table.ajax.reload(null, false);
-						$(".mod_edit_sosmed").modal("hide");
+						$(".mod_edit_toko").modal("hide");
 					} else {
 						toastr.error(out.sts, 'INFO');
 					}
@@ -332,10 +382,10 @@ defined('BASEPATH') or exit('No direct script access allowed');
 			});
 		});
 
-		// DELETE SOSMED
-		$('#datatable-responsive').on("click", "#mod_sosmed_del", function() {
+		// DELETE USER
+		$('#datatable-responsive').on("click", "#user_del", function() {
 			var id = $(this).data("id");
-			var mdl = $(".mod_hapus_sosmed");
+			var mdl = $(".mod_hapus_user");
 			mdl.modal("show");
 			mdl.find(".btn-danger").data("id", id);
 
@@ -344,7 +394,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 				btn.button('loading');
 
 				$.ajax({
-					url: ip_server + "properti/hapus_sosmed",
+					url: ip_server + "admin/hapus_user",
 					type: "POST",
 					data: {
 						id_hapus: id
@@ -355,7 +405,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 						if (out.sts == "ok") {
 							toastr.success("Hapus Sukses", 'INFO');
 							dt_table.ajax.reload(null, false);
-							$(".mod_hapus_sosmed").modal("hide");
+							$(".mod_hapus_user").modal("hide");
 						} else {
 							toastr.error(out.sts, 'INFO');
 						}

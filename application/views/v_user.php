@@ -28,60 +28,6 @@ defined('BASEPATH') or exit('No direct script access allowed');
 <!-- Page content -->
 <div class="container-fluid mt--6">
 	<div class="row">
-		<!-- <div class="col-xl-4 order-xl-2">
-			<div class="card card-profile">
-				<img src="<?php echo base_url(); ?>assets/img/theme/img-1-1000x600.jpg" alt="Image placeholder" class="card-img-top">
-				<div class="row justify-content-center">
-					<div class="col-lg-3 order-lg-2">
-						<div class="card-profile-image">
-							<a href="#">
-								<img src="<?php echo base_url(); ?>assets/img/theme/team-4.jpg" class="rounded-circle">
-							</a>
-						</div>
-					</div>
-				</div>
-				<div class="card-header text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
-					<div class="d-flex justify-content-between">
-						<a href="#" class="btn btn-sm btn-info  mr-4 ">Connect</a>
-						<a href="#" class="btn btn-sm btn-default float-right">Message</a>
-					</div>
-				</div>
-				<div class="card-body pt-0">
-					<div class="row">
-						<div class="col">
-							<div class="card-profile-stats d-flex justify-content-center">
-								<div>
-									<span class="heading">22</span>
-									<span class="description">Friends</span>
-								</div>
-								<div>
-									<span class="heading">10</span>
-									<span class="description">Photos</span>
-								</div>
-								<div>
-									<span class="heading">89</span>
-									<span class="description">Comments</span>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="text-center">
-						<h5 class="h3">
-							Jessica Jones<span class="font-weight-light">, 27</span>
-						</h5>
-						<div class="h5 font-weight-300">
-							<i class="ni location_pin mr-2"></i>Bucharest, Romania
-						</div>
-						<div class="h5 mt-4">
-							<i class="ni business_briefcase-24 mr-2"></i>Solution Manager - Creative Tim Officer
-						</div>
-						<div>
-							<i class="ni education_hat mr-2"></i>University of Computer Science
-						</div>
-					</div>
-				</div>
-			</div>
-		</div> -->
 		<div class="col-xl-12 order-xl-1">
 			<div class="card">
 				<div class="card-header">
@@ -120,6 +66,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 														<th>No</th>
 														<th>Nama</th>
 														<th>Email</th>
+														<th>Hak</th>
 														<th>Aksi</th>
 													</tr>
 												</thead>
@@ -149,13 +96,13 @@ defined('BASEPATH') or exit('No direct script access allowed');
 					<div class="modal-body">
 						<form id="f_tambah_user" method="post">
 							<div class="row">
-								<div class="col-lg-6 col-md-4 col-sm-12">
+								<div class="col-lg-6 col-md-12 col-sm-12">
 									<div class="form-group">
 										<label class="form-control-label" for="input-username">Nama</label>
 										<input type="text" id="nama_user" name="nama_user" class="form-control" placeholder="Nama User" autocomplete="off">
 									</div>
 								</div>
-								<div class="col-lg-6 col-md-4 col-sm-12">
+								<div class="col-lg-6 col-md-12 col-sm-12">
 									<div class="form-group">
 										<label class="form-control-label" for="input-username">Password</label>
 										<input type="text" id="password_user" name="password_user" class="form-control" placeholder="Password">
@@ -163,7 +110,18 @@ defined('BASEPATH') or exit('No direct script access allowed');
 								</div>
 							</div>
 							<div class="row">
-								<div class="col-lg-6 col-md-4 col-sm-12">
+								<div class="col-lg-6 col-md-12 col-sm-12">
+									<div class="form-group">
+										<label class="form-control-label" for="input-username">Hak</label>
+										<select class="form-control" aria-label="Default select example" id="hak_user" name="hak_user">
+											<option selected value="">Pilih Hak</option>
+											<option value="admin">Admin</option>
+											<option value="agen">Agen</option>
+											<option value="member">Member</option>
+										</select>
+									</div>
+								</div>
+								<div class="col-lg-6 col-md-12 col-sm-12">
 									<div class="form-group">
 										<label class="form-control-label" for="input-last-name">Email</label>
 										<input type="email" id="email" name="email" class="form-control" placeholder="Email" autocomplete="off">
@@ -194,13 +152,13 @@ defined('BASEPATH') or exit('No direct script access allowed');
 						<form id="f_edit_user" method="post">
 							<input type="hidden" name="id_edit" class="edit">
 							<div class="row">
-								<div class="col-lg-6 col-md-4 col-sm-12">
+								<div class="col-lg-6 col-md-12 col-sm-12">
 									<div class="form-group">
 										<label class="form-control-label" for="input-username">Nama</label>
 										<input type="text" id="ed_nama_user" name="ed_nama_user" class="form-control" placeholder="Nama User" autocomplete="off">
 									</div>
 								</div>
-								<div class="col-lg-6 col-md-4 col-sm-12">
+								<div class="col-lg-6 col-md-12 col-sm-12">
 									<div class="form-group">
 										<label class="form-control-label" for="input-username">Password</label>
 										<input type="text" id="ed_password_user" name="ed_password_user" class="form-control" placeholder="Password">
@@ -208,7 +166,18 @@ defined('BASEPATH') or exit('No direct script access allowed');
 								</div>
 							</div>
 							<div class="row">
-								<div class="col-lg-6 col-md-4 col-sm-12">
+								<div class="col-lg-6 col-md-12 col-sm-12">
+									<div class="form-group">
+										<label class="form-control-label" for="input-username">Hak</label>
+										<select class="form-control" aria-label="Default select example" id="ed_hak_user" name="ed_hak_user">
+											<option selected value="">Pilih Hak</option>
+											<option value="admin">Admin</option>
+											<option value="agen">Agen</option>
+											<option value="member">Member</option>
+										</select>
+									</div>
+								</div>
+								<div class="col-lg-6 col-md-12 col-sm-12">
 									<div class="form-group">
 										<label class="form-control-label" for="input-last-name">Email</label>
 										<input type="email" id="ed_email" name="ed_email" class="form-control" placeholder="Email" autocomplete="off">
@@ -279,6 +248,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 					null,
 					null,
 					null,
+					null
 					/* {
 						"width": "250px"
 					} */
@@ -301,6 +271,11 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 				if ($("#password_user").val() == "") {
 					toastr.error("Password belum di isi", 'INFO');
+					return false;
+				};
+				
+				if ($("#hak_user").val() == "") {
+					toastr.error("Hak belum di pilih", 'INFO');
 					return false;
 				};
 
@@ -327,6 +302,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 							dt_table.ajax.reload(null, false);
 							$('#mod_tambah_user').modal('hide');
 							$("#nama_user").val("");
+							$("#hak_user").val("");
 							$("#password_user").val("");
 							$("#email").val("");
 						} else {
@@ -379,6 +355,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 				$("[name=ed_nama_user]").val(out[1]);
 				$("[name=ed_password_user]").val('');
 				$("[name=ed_email]").val(out[3]);
+				$("[name=ed_hak_user]").val(out[4]);
 				mdl.modal("show");
 
 			}, "json");
@@ -395,6 +372,11 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 			if ($("#ed_hak_user").val() == "") {
 				toastr.error("Hak belum di pilih", 'INFO');
+				return false;
+			};
+
+			if ($("#ed_email").val() == "") {
+				toastr.error("Email belum di pilih", 'INFO');
 				return false;
 			};
 

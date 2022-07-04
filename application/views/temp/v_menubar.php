@@ -5,7 +5,7 @@
 			<span class="navbar-toggler-icon"></span>
 		</button>
 		<!-- Brand -->
-		<a class="navbar-brand pt-0" href="./index.html">
+		<a class="navbar-brand pt-0" href="<?php echo base_url(); ?>home">
 			<img src="<?php echo base_url(); ?>assets/img/brand/logo_property.jpg" class="navbar-brand-img" alt="...">
 		</a>
 		<!-- User -->
@@ -24,6 +24,7 @@
 			<li class="nav-item dropdown">
 				<a class="nav-link" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 					<div class="media align-items-center">
+						
 						<span class="avatar avatar-sm rounded-circle">
 							<img alt="Image placeholder" src="<?php echo base_url(); ?>assets/img/theme/team-4.jpg">
 						</span>
@@ -63,7 +64,7 @@
 			<div class="navbar-collapse-header d-md-none">
 				<div class="row">
 					<div class="col-6 collapse-brand">
-						<a href="./index.html">
+						<a href="<?php echo base_url(); ?>login/logout">
 							<img src="<?php echo base_url(); ?>assets/img/brand/logo_property.jpg">
 						</a>
 					</div>
@@ -102,20 +103,24 @@
 					</a>
 					<div class="dropdown-menu" aria-labelledby="dropdownMenu2" style="width: fit-content;margin-left: 10%;">
 						<a class="dropdown-item" type="button" href="<?php echo base_url(); ?>properti">Tambah Properti</a>
-						<a class="dropdown-item" type="button" href="<?php echo base_url(); ?>properti/tipe_properti">Tipe Properti</a>
-						<a class="dropdown-item" type="button" href="<?php echo base_url(); ?>properti/jenis_properti">Jenis Properti</a>
-						<a class="dropdown-item" type="button" href="<?php echo base_url(); ?>properti/sertifikat">Sertifikat</a>
-						<a class="dropdown-item" type="button" href="<?php echo base_url(); ?>properti/sosial_media">Sosial Media</a>
+						<a class="dropdown-item" type="button" href="<?php echo base_url(); ?>berita">Tambah Berita</a>
+						<a class="dropdown-item" type="button" href="<?php echo base_url(); ?>member">Future List Member</a>
 					</div>
 				</li>
 				<li class="nav-item dropdown">
 					<a <?= ($this->uri->segment(1) == 'admin') ? 'class="nav-link active"' : 'class="nav-link"' ?> href="#" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						<i class="ni ni-circle-08 text-primary"></i> Setting
+						<i class="ni ni-circle-08 text-primary"></i> Set Master
 						<!-- <span class="nav-link-text">Setting</span> -->
 					</a>
 					<div class="dropdown-menu" aria-labelledby="dropdownMenu2" style="width: fit-content;margin-left: 10%;">
-						<a class="dropdown-item" type="button" href="<?php echo base_url(); ?>admin/user">Set Admin</a>
+						<a class="dropdown-item" type="button" href="<?php echo base_url(); ?>admin/user">Set Admin Member</a>
+						<a class="dropdown-item" type="button" href="<?php echo base_url(); ?>admin/toko_member">Set Toko Member</a>
 						<a class="dropdown-item" type="button" href="<?php echo base_url(); ?>admin/bank">Set Bank</a>
+						<a class="dropdown-item" type="button" href="<?php echo base_url(); ?>properti/tipe_properti">Set Tipe Properti</a>
+						<a class="dropdown-item" type="button" href="<?php echo base_url(); ?>properti/jenis_properti">Set Jenis Properti</a>
+						<a class="dropdown-item" type="button" href="<?php echo base_url(); ?>properti/sertifikat">Set Sertifikat</a>
+						<a class="dropdown-item" type="button" href="<?php echo base_url(); ?>properti/sosial_media">Set Sosial Media</a>
+						<a class="dropdown-item" type="button" href="<?php echo base_url(); ?>admin/paket">Set Paket Promo</a>
 					</div>
 				</li>
 			</ul>

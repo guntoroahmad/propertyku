@@ -48,6 +48,9 @@ defined('BASEPATH') or exit('No direct script access allowed');
 	<script src="<?php echo base_url(); ?>assets/js/toastr.min.js"></script>
 	<script src="<?php echo base_url(); ?>assets/js/cropper.min.js"></script>
 	<script src="<?php echo base_url(); ?>assets/js/jquery.masknumber.min.js"></script>
+	<script src="<?php echo base_url(); ?>assets/js/tinymce.min.js" referrerpolicy="origin"></script>
+    <!-- <script src="<?php echo base_url(); ?>assets/js/tinymce-jquery.min.js"></script> -->
+	<script src="https://cdn.jsdelivr.net/npm/@tinymce/tinymce-jquery@1/dist/tinymce-jquery.min.js"></script>
 	<!-- Datatables -->
 	<script src="<?php echo base_url(); ?>assets/vendor/datatables.net/js/jquery.dataTables.min.js"></script>
 	<script src="<?php echo base_url(); ?>assets/data-table/dataTables_js/dataTables.bootstrap4.min.js"></script>

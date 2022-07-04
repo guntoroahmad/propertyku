@@ -55,9 +55,17 @@ class M_properti extends CI_Model
 		return $this->db->query($sql);
 	}
 
+	function list_paket()
+	{
+		$sql = "SELECT * FROM m_paket_promo WHERE delete_at IS NULL;";
+		return $this->db->query($sql);
+	}
+
 	function tabel_properti()
 	{
-		$sql = "SELECT mt.id_toko_produk_member, mt.id_toko_member, mt.nama_properti, r.name nama_kota_kab, mp.nama_properti tipe_properti, mj.jenis_properti, ms.nama_sertifikat, mt.harga, mt.delete_at
+		$sql = "SELECT mt.id_toko_produk_member, m.hak, tm.nama_toko, mt.id_toko_member, mt.nama_properti,
+		r.name nama_kota_kab, mp.nama_properti tipe_properti, mj.jenis_properti,
+		ms.nama_sertifikat, mt.harga, mt.delete_at
 		FROM m_toko_produk_member mt
 		LEFT JOIN regencies r
 		ON mt.id_regencies = r.id
@@ -67,7 +75,11 @@ class M_properti extends CI_Model
 		ON mt.id_jenis_properti = mj.id_jenis_properti
 		LEFT JOIN m_sertifikat ms
 		ON mt.id_sertifikat = ms.id_sertifikat
-		WHERE mt.delete_at IS NULL and mt.status = 1
+		LEFT JOIN m_toko_member tm
+		ON mt.id_toko_member = tm.id_toko_member
+		LEFT JOIN m_member m
+		ON tm.id_member = m.id_member
+		WHERE mt.delete_at IS NULL
 		ORDER BY mt.id_toko_produk_member DESC;";
 		return $this->db->query($sql);
 	}
@@ -135,6 +147,18 @@ class M_properti extends CI_Model
 	function simpan_sosmed($data)
 	{
 		$this->db->insert('m_sosial_media', $data);
+		return $this->db->insert_id();
+	}
+
+	function simpan_toko_produk($data)
+	{
+		$this->db->insert('t_promo_toko_produk_member', $data);
+		return $this->db->insert_id();
+	}
+
+	function simpan_iklan($data)
+	{
+		$this->db->insert('t_promo_iklan_slot', $data);
 		return $this->db->insert_id();
 	}
 
@@ -244,6 +268,17 @@ class M_properti extends CI_Model
 	{
 		$this->db->where('id', $id);
 		return $this->db->update('m_sosial_media', $data);
+	}
+
+	function hapus_properti($id, $data)
+	{
+		$this->db->where('id_toko_produk_member', $id);
+		return $this->db->update('m_toko_produk_member', $data);
+	}
+
+	function konfirm_properti($data){
+		$this->db->insert('t_promo_toko_produk_member', $data);
+		return $this->db->insert_id();
 	}
 
 	/* function simpan_permintaan_barang($data)

@@ -56,13 +56,13 @@ class Login extends CI_Controller
 		$pass = addslashes($this->input->post("pass"));
 		$password = hash('sha256', $pass);
 		// print_r($username.' - '.$pass.'-'.$password);return false;
-		$query = $this->M_login->cek_login($username, $password);
+		$query = $this->M_login->cek_login_member($username, $password);
 		$data = array();
 		if ($query->num_rows() > 0) {
-			$row = $this->M_login->cek_login($username, $password)->row();
+			$row = $this->M_login->cek_login_member($username, $password)->row();
 			$newdata = array(
-				'iduser' => $row->id_admin,
-				'nama' => $row->nama_admin,
+				'iduser' => $row->id_member,
+				'nama' => $row->nama,
 				/* 'hak' => $row->HAK,
 				'kord' => $row->KORD, */
 			);

@@ -90,16 +90,18 @@ class Properti extends CI_Controller
 		foreach ($query->result() as $row) {
 
 			$data[$no][0] = $no + 1;
-			$data[$no][1] = $row->nama_properti;
-			$data[$no][2] = $row->nama_kota_kab;
+			$data[$no][1] = $row->nama_toko;
+			$data[$no][2] = $row->nama_properti;
+			$data[$no][3] = $row->nama_kota_kab;
 			// $data[$no][2] = date("d-m-Y", strtotime($row->DATE_CREATE));
-			$data[$no][3] = $row->tipe_properti;
-			$data[$no][4] = $row->jenis_properti;
+			$data[$no][4] = $row->tipe_properti;
+			$data[$no][5] = $row->jenis_properti;
 			// $data[$no][5] = $row->nama_sertifikat;
-			$data[$no][5] = "Rp " . number_format($row->harga, 2, ',', '.');
-			$data[$no][6] = '<button class="btn btn-success p_detail_gambar" data-id="' . $row->id_toko_produk_member . '" type="button" data-toggle="tooltip" title="Gambar Produk"><i class="fa fa-file-image"></i></button>';
-			$data[$no][7] = '<button type="button" class="btn btn-warning btn-round" id="mod_properti_edit" data-id="' . $row->id_toko_produk_member . '">Ubah</button>
-			<button type="button" class="btn btn-danger btn-round" id="mod_properti_del" data-id="' . $row->id_toko_produk_member . '">Hapus</button>';
+			$data[$no][6] = "Rp " . number_format($row->harga, 2, ',', '.');
+			$data[$no][7] = '<button class="btn btn-success p_detail_gambar" data-id="' . $row->id_toko_produk_member . '" type="button" data-toggle="tooltip" title="Gambar Produk"><i class="fa fa-file-image"></i></button>';
+			$data[$no][8] = '<button type="button" class="btn btn-warning btn-round" id="mod_properti_edit" data-id="' . $row->id_toko_produk_member . '">Ubah</button>
+			<button type="button" class="btn btn-danger btn-round" id="mod_properti_del" data-id="' . $row->id_toko_produk_member . '">Hapus</button>
+			<button type="button" class="btn btn-info btn-round" id="mod_properti_konfirm" data-id="' . $row->id_toko_produk_member . '">Future List</button>';
 			$no++;
 		}
 		$kirim = array(
@@ -326,10 +328,30 @@ class Properti extends CI_Controller
 		echo json_encode($arr);
 	}
 
+	function list_paket()
+	{
+		$this->load->model('M_properti');
+		$res = $this->M_properti->list_paket()->result_array();
+		$arr = array();
+		foreach ($res as $dt) {
+			$arr[] = array(
+				'id_paket_promo' => $dt['id_paket_promo'],
+				'nama_paket' => $dt['nama_paket'],
+				'masa_aktif' => $dt['masa_aktif'],
+				'harga' => $dt['harga']
+			);
+		}
+
+		$data = array(
+			'data' => $arr
+		);
+		echo json_encode($arr);
+	}
+
 	function simpan_properti()
 	{
 		$this->load->model('M_properti');
-		// $iduser = $_SESSION['iduser'];
+		$iduser = $_SESSION['iduser'];
 		$nama_properti = $this->input->post("nama_properti");
 		$alamat = $this->input->post("alamat");
 		$map_lat = $this->input->post("map_lat");
@@ -343,7 +365,6 @@ class Properti extends CI_Controller
 		$luas_bangunan = $this->input->post("luas_bangunan");
 		$jenis_properti = $this->input->post("jenis_properti");
 		$tahun = $this->input->post("tahun");
-		$nama_developer = $this->input->post("nama_developer");
 		$jenis_sertifikat = $this->input->post("jenis_sertifikat");
 		$jumlah_kt = $this->input->post("jumlah_kt");
 		$jumlah_km = $this->input->post("jumlah_km");
@@ -360,7 +381,14 @@ class Properti extends CI_Controller
 			$sts = "exist";
 		} else {
 			$this->db->trans_start();
+			$q = "SELECT * FROM m_toko_member WHERE id_member = '{$iduser}';";
+			$get_id = $this->db->query($q)->result_array();
+			foreach ($get_id as $row) {
+				$id_toko_member = $row['id_toko_member'];
+			};
+
 			$data = array(
+				"id_toko_member" => $id_toko_member,
 				"nama_properti" => $nama_properti,
 				"alamat" => $alamat,
 				"lokasi_lat" => $map_lat,
@@ -376,7 +404,6 @@ class Properti extends CI_Controller
 				"luas_bangunan" => $luas_bangunan,
 				"tahun" => $tahun,
 				"harga" => preg_replace("/[^0-9]/", "", $harga),
-				"nama_developer" => $nama_developer,
 				"jml_kt" => $jumlah_kt,
 				"jml_km" => $jumlah_km,
 				"deskripsi" => $deskripsi,
@@ -392,10 +419,9 @@ class Properti extends CI_Controller
 				$im = imagecreatefromstring($base64_gambar);
 				$img = $this->my_wanto->resize_image($im, $lebar, $tinggi);
 				//end compress
-				$lokasi = "file/property/" . $nama_kelurahan . "-$tipe_properti.$i-" . date('U') . ".jpg";
-				// $lokasi_real = "../kylocoffee-server-xendit/" . $lokasi;
-				imagejpeg($img, $lokasi, 90);
-				// imagejpeg($img, $lokasi, 90);
+				$lokasi = "fileapp/propertyku/profil/" . $nama_kelurahan . "-$tipe_properti.$i-" . date('U') . ".jpg";
+				$lokasi_real = "../" . $lokasi;
+				imagejpeg($img, $lokasi_real, 90);
 				$sts = "";
 				$data_det = array(
 					"id_toko_produk_member" => $id_properti,
@@ -550,7 +576,7 @@ class Properti extends CI_Controller
 			$data[13] = $row->luas_bangunan;
 			$data[14] = $row->tahun;
 			$data[15] = $row->harga;
-			$data[16] = $row->nama_developer;
+			// $data[16] = $row->nama_developer;
 			$data[17] = $row->jml_kt;
 			$data[18] = $row->jml_km;
 			$data[19] = $row->deskripsi;
@@ -566,7 +592,8 @@ class Properti extends CI_Controller
 		$data = array();
 		foreach ($query->result() as $key => $row) {
 			$data[$key][0] = $row->id_produk_foto;
-			$data[$key][1] = "data:image/jpeg;base64," . @base64_encode(file_get_contents($row->file_url));
+			// $data[$key][1] = "data:image/jpeg;base64," . @base64_encode(file_get_contents($row->file_url));
+			$data[$key][1] = "data:image/jpeg;base64," .  @base64_encode(file_get_contents("http://localhost/" . $row->file_url));
 		}
 		$this->output->set_content_type('application/json')
 			->set_output(json_encode($data));
@@ -643,7 +670,6 @@ class Properti extends CI_Controller
 		$luas_bangunan = $this->input->post("ed_luas_bangunan");
 		$jenis_properti = $this->input->post("ed_jenis_properti");
 		$tahun = $this->input->post("ed_tahun");
-		$nama_developer = $this->input->post("ed_nama_developer");
 		$jenis_sertifikat = $this->input->post("ed_jenis_sertifikat");
 		$jumlah_kt = $this->input->post("ed_jumlah_kt");
 		$jumlah_km = $this->input->post("ed_jumlah_km");
@@ -671,7 +697,6 @@ class Properti extends CI_Controller
 				"luas_bangunan" => $luas_bangunan,
 				"tahun" => $tahun,
 				"harga" => preg_replace("/[^0-9]/", "", $harga),
-				"nama_developer" => $nama_developer,
 				"jml_kt" => $jumlah_kt,
 				"jml_km" => $jumlah_km,
 				"deskripsi" => $deskripsi,
@@ -712,9 +737,10 @@ class Properti extends CI_Controller
 			$base64_gambar = base64_decode(str_replace("data:image/jpeg;base64,", "", $foto[$i]));
 			$im = imagecreatefromstring($base64_gambar);
 			$img = $this->my_wanto->resize_image($im, $lebar, $tinggi);
-			$lokasi = "file/property/property_edit_" . $i . "-" . date('U') . ".jpg";
-			// $lokasi_real = "../kylocoffee-server-xendit/" . $lokasi;
-			imagejpeg($img, $lokasi, 90);
+			// $lokasi = "file/property/property_edit_" . $i . "-" . date('U') . ".jpg";
+			$lokasi = "fileapp/propertyku/profil/property_edit_" . $i . "-" . date('U') . ".jpg";
+			$lokasi_real = "../" . $lokasi;
+			imagejpeg($img, $lokasi_real, 90);
 			// imagejpeg($img, $lokasi, 90);
 			$sts = "";
 			$data_det = array(
@@ -939,6 +965,79 @@ class Properti extends CI_Controller
 		);
 
 		$query = $this->M_properti->hapus_sosmed($id_hapus, $data);
+		if ($query) {
+			$sts = "ok";
+		} else {
+			$sts = "Gagal Simpan Data";
+		}
+
+		$kirim = array(
+			"sts" => $sts
+		);
+		$this->output->set_content_type('application/json')
+			->set_output(json_encode($kirim));
+	}
+
+	public function hapus_properti()
+	{
+		$this->load->model('M_properti');
+		$id_hapus = $this->input->post("id_hapus");
+		$data = array(
+			"delete_at" => date("Y-m-d H:i:s")
+		);
+
+		$query = $this->M_properti->hapus_properti($id_hapus, $data);
+		if ($query) {
+			$sts = "ok";
+		} else {
+			$sts = "Gagal Simpan Data";
+		}
+
+		$kirim = array(
+			"sts" => $sts
+		);
+		$this->output->set_content_type('application/json')
+			->set_output(json_encode($kirim));
+	}
+
+	public function konfirm_properti()
+	{
+		$this->load->model('M_properti');
+		$id_toko_produk_member = $this->input->post("id_toko_produk_member");
+		$paket_promo = $this->input->post("paket_promo");
+		$waktu_aktif = $this->input->post("waktu_aktif");
+		$qty_paket = $this->input->post("qty_paket");
+
+		$q = "SELECT masa_aktif FROM m_paket_promo WHERE id_paket_promo = '{$paket_promo}';";
+		$get_id = $this->db->query($q)->result_array();
+		foreach ($get_id as $row) {
+			$masa_aktif = $row['masa_aktif'];
+		};
+
+		$data = array(
+			"id_paket_promo" => $paket_promo,
+			"waktu_aktif_promo" => $waktu_aktif,
+			"lama_masa_aktif_promo" => $masa_aktif * $qty_paket,
+			"qty_paket" => $qty_paket,
+			"waktu_konfirmasi" => date("Y-m-d H:i:s"),
+			"status_verifikasi" => 1,
+			"create_at" => date("Y-m-d H:i:s"),
+			"id_member" => $_SESSION['iduser']
+		);
+
+		/* print_r($data);
+		exit(); */
+		$id_toko_promo = $this->M_properti->simpan_toko_produk($data);
+
+		$data_iklan_slot = array(
+			"id_toko_promo" => $id_toko_promo,
+			"id_produk_toko_member" => $id_toko_produk_member,
+			"create_at" => date("Y-m-d H:i:s"),
+			"id_member_last" => $_SESSION['iduser'],
+		);
+
+		$query = $this->M_properti->simpan_iklan($data_iklan_slot);
+
 		if ($query) {
 			$sts = "ok";
 		} else {

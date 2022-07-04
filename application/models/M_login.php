@@ -17,34 +17,8 @@ class M_login extends CI_Model {
     }
 
     function cek_login_member($email, $pass) {
-        $sql = "SELECT * FROM member WHERE email='{$email}' AND password='{$pass}' and status = 1;";
+        $sql = "SELECT * FROM m_member WHERE email='{$email}' AND password='{$pass}' and hak = 'admin';";
         // print_r($sql);exit();
-        return $this->db->query($sql);
-    }
-
-    function cek_register($email) {
-        $cek_reg = "SELECT * FROM member WHERE email = '{$email}';";
-        return $this->db->query($cek_reg);
-    }
-
-    function register($reg_user, $email, $pass, $password, $address){
-        $id_hash = hash('sha256', $email);
-		$sql = "INSERT INTO member SET nama = '{$reg_user}', email = '{$email}', PASSWORD = '{$password}', alamat = '{$address}', `date` = NOW(), id_hash = '{$id_hash}';";
-		return $this->db->query($sql);
-    }
-
-    function update_stat_login($id_hash){
-        $sql = "UPDATE member SET status = 1 WHERE id_hash = '{$id_hash}';";
-        return $this->db->query($sql);
-    }
-
-    function cek_login_hash($id_hash,$password) {
-        $sql = "SELECT * FROM member WHERE id_hash='{$id_hash}' AND password='{$password}' AND status = 1;";
-        return $this->db->query($sql);
-    }
-
-    function cek_email_reset($id_hash) {
-        $sql = "SELECT * FROM member WHERE id_hash='{$id_hash}' AND status = 1;";
         return $this->db->query($sql);
     }
 

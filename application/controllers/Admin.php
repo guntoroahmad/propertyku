@@ -42,6 +42,24 @@ class Admin extends CI_Controller
 		$this->load->view("temp/v_foot");
 	}
 
+	public function paket()
+	{
+		$this->load->view("temp/v_head");
+		$this->load->view("temp/v_menubar");
+		$this->load->view("temp/v_navbar");
+		$this->load->view("v_paket_promo");
+		$this->load->view("temp/v_foot");
+	}
+
+	public function toko_member()
+	{
+		$this->load->view("temp/v_head");
+		$this->load->view("temp/v_menubar");
+		$this->load->view("temp/v_navbar");
+		$this->load->view("v_toko_member");
+		$this->load->view("temp/v_foot");
+	}
+
 	function tabel_user()
 	{
 		$this->load->model('M_admin');
@@ -51,10 +69,11 @@ class Admin extends CI_Controller
 		foreach ($query->result() as $row) {
 
 			$data[$no][0] = $no + 1;
-			$data[$no][1] = $row->nama_admin;
+			$data[$no][1] = $row->nama;
 			$data[$no][2] = $row->email;
-			$data[$no][3] = '<button type="button" class="btn btn-warning btn-round" id="user_edit" data-id="' . $row->id_admin . '">Ubah</button>
-                                <button type="button" class="btn btn-danger btn-round" id="user_del" data-id="' . $row->id_admin . '">Hapus</button>';
+			$data[$no][3] = $row->hak;
+			$data[$no][4] = '<button type="button" class="btn btn-warning btn-round" id="user_edit" data-id="' . $row->id_member . '">Ubah</button>
+                                <button type="button" class="btn btn-danger btn-round" id="user_del" data-id="' . $row->id_member . '">Hapus</button>';
 			$no++;
 		}
 		$kirim = array(
@@ -75,6 +94,49 @@ class Admin extends CI_Controller
 			$data[$no][1] = $row->nama_bank;
 			$data[$no][2] = '<button type="button" class="btn btn-warning btn-round" id="bank_edit" data-id="' . $row->id_bank . '">Ubah</button>
                                 <button type="button" class="btn btn-danger btn-round" id="bank_del" data-id="' . $row->id_bank . '">Hapus</button>';
+			$no++;
+		}
+		$kirim = array(
+			"data" => $data
+		);
+		$this->output->set_content_type('application/json')->set_output(json_encode($kirim));
+	}
+
+	function tabel_paket()
+	{
+		$this->load->model('M_admin');
+		$query = $this->M_admin->tabel_paket();
+		$data = array();
+		$no = 0;
+		foreach ($query->result() as $row) {
+
+			$data[$no][0] = $no + 1;
+			$data[$no][1] = $row->nama_paket;
+			$data[$no][2] = "Rp " . number_format($row->harga, 2, ',', '.');
+			$data[$no][3] = $row->masa_aktif;
+			$data[$no][4] = $row->deskripsi;
+			$data[$no][5] = '<button type="button" class="btn btn-warning btn-round" id="paket_edit" data-id="' . $row->id_paket_promo . '">Ubah</button>
+                                <button type="button" class="btn btn-danger btn-round" id="paket_del" data-id="' . $row->id_paket_promo . '">Hapus</button>';
+			$no++;
+		}
+		$kirim = array(
+			"data" => $data
+		);
+		$this->output->set_content_type('application/json')->set_output(json_encode($kirim));
+	}
+
+	function tabel_toko()
+	{
+		$this->load->model('M_admin');
+		$query = $this->M_admin->tabel_toko();
+		$data = array();
+		$no = 0;
+		foreach ($query->result() as $row) {
+
+			$data[$no][0] = $no + 1;
+			$data[$no][1] = $row->nama_toko;
+			$data[$no][2] = $row->alamat;
+			$data[$no][3] = '<button type="button" class="btn btn-warning btn-round" id="toko_edit" data-id="' . $row->id_toko_member . '">Ubah</button>';
 			$no++;
 		}
 		$kirim = array(
@@ -137,14 +199,16 @@ class Admin extends CI_Controller
 		$this->load->model('M_admin');
 		$nama_user = addslashes($this->input->post("nama_user"));
 		$password_user = addslashes($this->input->post("password_user"));
+		$hak_user = $this->input->post("hak_user");
 		$password = hash('sha256', $password_user);
 		$email = $this->input->post("email");
 
 		$this->db->trans_start();
 
 		$data = array(
-			"nama_admin" => $nama_user,
+			"nama" => $nama_user,
 			"password" => $password,
+			"hak" => $hak_user,
 			"email" => $email,
 			"create_at" => date("Y-m-d H:i:s")
 		);
@@ -194,6 +258,79 @@ class Admin extends CI_Controller
 			->set_output(json_encode($kirim));
 	}
 
+	public function simpan_paket()
+	{
+		$this->load->model('M_admin');
+		$nama_paket = addslashes($this->input->post("nama_paket"));
+		$harga_paket = $this->input->post("harga_paket");
+		$masa_aktif = $this->input->post("masa_aktif");
+		$deskripsi = $this->input->post("deskripsi");
+		$id_admin = $_SESSION['iduser'];
+
+		$this->db->trans_start();
+		$data = array(
+			"nama_paket" => $nama_paket,
+			"masa_aktif" => $masa_aktif,
+			"harga" => preg_replace("/[^0-9]/", "", $harga_paket),
+			"deskripsi" => $deskripsi,
+			"id_admin" => $id_admin,
+			"create_at" => date("Y-m-d H:i:s")
+		);
+
+		// print_r($data);exit();
+		$this->M_admin->set_paket_baru($data);
+
+		$this->db->trans_complete();
+		if ($this->db->trans_status() === FALSE) {
+			$sts = "Gagal Simpan Data";
+		} else {
+			$sts = "ok";
+		}
+
+		$kirim = array(
+			"sts" => $sts
+		);
+		$this->output->set_content_type('application/json')
+			->set_output(json_encode($kirim));
+	}
+
+	public function simpan_toko()
+	{
+		$this->load->model('M_admin');
+		$id_member = $_SESSION['iduser'];
+		$nama_toko = addslashes($this->input->post("nama_toko"));
+		$long = $this->input->post("long_toko");
+		$lat = $this->input->post("lat_toko");
+		$alamat = $this->input->post("alamat_toko");
+
+		$this->db->trans_start();
+
+		$data = array(
+			"id_member" => $id_member,
+			"nama_toko" => $nama_toko,
+			"lokasi_lng" => $long,
+			"lokasi_lat" => $lat,
+			"alamat" => $alamat,
+			"create_at" => date("Y-m-d H:i:s")
+		);
+
+		// print_r($data);exit();
+		$this->M_admin->set_toko_baru($data);
+
+		$this->db->trans_complete();
+		if ($this->db->trans_status() === FALSE) {
+			$sts = "Gagal Simpan Data";
+		} else {
+			$sts = "ok";
+		}
+
+		$kirim = array(
+			"sts" => $sts
+		);
+		$this->output->set_content_type('application/json')
+			->set_output(json_encode($kirim));
+	}
+
 	function baca_user_edit()
 	{
 		$this->load->model('M_admin');
@@ -201,10 +338,11 @@ class Admin extends CI_Controller
 		$query = $this->M_admin->get_user_edit($id_edit);
 		$data = array();
 		foreach ($query->result() as $row) {
-			$data[0] = $row->id_admin;
-			$data[1] = $row->nama_admin;
+			$data[0] = $row->id_member;
+			$data[1] = $row->nama;
 			$data[2] = $row->password;
 			$data[3] = $row->email;
+			$data[4] = $row->hak;
 		}
 		$this->output->set_content_type('application/json')->set_output(json_encode($data));
 	}
@@ -222,33 +360,68 @@ class Admin extends CI_Controller
 		$this->output->set_content_type('application/json')->set_output(json_encode($data));
 	}
 
+	function baca_paket_edit()
+	{
+		$this->load->model('M_admin');
+		$id_edit = $this->input->post("id_edit");
+		$query = $this->M_admin->get_paket_edit($id_edit);
+		$data = array();
+		foreach ($query->result() as $row) {
+			$data[0] = $row->id_paket_promo;
+			$data[1] = $row->nama_paket;
+			$data[2] = $row->masa_aktif;
+			$data[3] = $row->harga;
+			$data[4] = $row->deskripsi;
+		}
+		$this->output->set_content_type('application/json')->set_output(json_encode($data));
+	}
+
+	function baca_toko_edit()
+	{
+		$this->load->model('M_admin');
+		$id_edit = $this->input->post("id_edit");
+		$query = $this->M_admin->get_toko_edit($id_edit);
+		$data = array();
+		foreach ($query->result() as $row) {
+			$data[0] = $row->id_toko_member;
+			$data[1] = $row->nama_toko;
+			$data[2] = $row->lokasi_lng;
+			$data[3] = $row->lokasi_lat;
+			$data[4] = $row->alamat;
+		}
+		$this->output->set_content_type('application/json')->set_output(json_encode($data));
+	}
+
 	public function simpan_user_edit()
 	{
 		$this->load->model('M_admin');
 		$id_edit = $this->input->post("id_edit");
-		$nama_user = addslashes($this->input->post("ed_nama_user"));
+		$nama = addslashes($this->input->post("ed_nama_user"));
 		$password_user = addslashes($this->input->post("ed_password_user"));
 		$password = hash('sha256', $password_user);
 		$email = $this->input->post("ed_email");
+		$hak_user = $this->input->post("ed_hak_user");
 
 		if ($password_user == '') {
 			$data = array(
-				"nama_admin" => $nama_user,
+				"nama" => $nama,
 				"email" => $email,
+				"hak" => $hak_user,
 				"update_at" => date("Y-m-d H:i:s")
 			);
 		} else {
 			$data = array(
-				"nama_admin" => $nama_user,
+				"nama" => $nama,
 				"password" => $password,
 				"email" => $email,
+				"hak" => $hak_user,
 				"update_at" => date("Y-m-d H:i:s")
 			);
 		}
 
 		/* print_r($data);
 		exit(); */
-		$cek = $this->M_admin->cek_user_edit(addslashes($nama_user), $id_edit)->num_rows();
+		$cek = $this->M_admin->cek_user_edit(addslashes($nama), $id_edit)->num_rows();
 		$sts = "Nama Admin sudah ada";
 		if ($cek == 0) {
 			$query = $this->M_admin->update_user($id_edit, $data);
@@ -281,6 +454,80 @@ class Admin extends CI_Controller
 		$sts = "Nama Bank sudah ada";
 		if ($cek == 0) {
 			$query = $this->M_admin->update_bank($id_edit, $data);
+			if ($query) {
+				$sts = "ok";
+			} else {
+				$sts = "Gagal Simpan Data";
+			}
+		}
+		$kirim = array(
+			"sts" => $sts
+		);
+		$this->output->set_content_type('application/json')
+			->set_output(json_encode($kirim));
+	}
+
+	public function simpan_paket_edit()
+	{
+		$this->load->model('M_admin');
+		$id_edit = $this->input->post("id_edit");
+		$nama_paket = addslashes($this->input->post("ed_nama_paket"));
+		$harga_paket = $this->input->post("ed_harga_paket");
+		$masa_aktif = $this->input->post("ed_masa_aktif");
+		$deskripsi = $this->input->post("ed_deskripsi");
+		$id_admin = $_SESSION['iduser'];
+
+		$data = array(
+			"nama_paket" => $nama_paket,
+			"masa_aktif" => $masa_aktif,
+			"harga" => $harga_paket,
+			"deskripsi" => $deskripsi,
+			"id_admin" => $id_admin,
+			"update_at" => date("Y-m-d H:i:s")
+		);
+		/* print_r($data);
+		exit(); */
+		$cek = $this->M_admin->cek_paket_edit(addslashes($nama_paket), $id_edit)->num_rows();
+		$sts = "Nama paket sudah ada";
+		if ($cek == 0) {
+			$query = $this->M_admin->update_paket($id_edit, $data);
+			if ($query) {
+				$sts = "ok";
+			} else {
+				$sts = "Gagal Simpan Data";
+			}
+		}
+		$kirim = array(
+			"sts" => $sts
+		);
+		$this->output->set_content_type('application/json')
+			->set_output(json_encode($kirim));
+	}
+
+	public function simpan_toko_edit()
+	{
+		$this->load->model('M_admin');
+		$id_edit = $this->input->post("id_edit");
+		$nama_toko = addslashes($this->input->post("ed_nama_toko"));
+		$lat_toko = $this->input->post("ed_lat_toko");
+		$long_toko = $this->input->post("ed_long_toko");
+		$alamat_toko = $this->input->post("ed_alamat_toko");
+		$id_member = $_SESSION['iduser'];
+
+		$data = array(
+			"id_member" => $id_member,
+			"nama_toko" => $nama_toko,
+			"lokasi_lng" => $long_toko,
+			"lokasi_lat" => $lat_toko,
+			"alamat" => $alamat_toko,
+			"update_at" => date("Y-m-d H:i:s")
+		);
+		/* print_r($data);
+		exit(); */
+		$cek = $this->M_admin->cek_toko_edit(addslashes($nama_toko), $id_edit)->num_rows();
+		$sts = "Nama toko sudah ada";
+		if ($cek == 0) {
+			$query = $this->M_admin->update_toko($id_edit, $data);
 			if ($query) {
 				$sts = "ok";
 			} else {
@@ -338,37 +585,21 @@ class Admin extends CI_Controller
 			->set_output(json_encode($kirim));
 	}
 
-	public function ubah_stat_barang()
+	public function hapus_paket()
 	{
 		$this->load->model('M_admin');
-		$id_permintaan = $this->input->post("id_permintaan");
-		$status_barang = 'sudah';
-		$query = $this->M_admin->update_stat_barang($id_permintaan, $status_barang);
-		$sts = "";
-		if ($query) {
-			$sts = "ok";
-		} else {
-			$sts = "Gagal update data";
-		}
-		$kirim = array(
-			"sts" => $sts
+		$id_hapus = $this->input->post("id_hapus");
+		$data = array(
+			"delete_at" => date("Y-m-d H:i:s")
 		);
-		$this->output->set_content_type('application/json')
-			->set_output(json_encode($kirim));
-	}
 
-	public function ubah_stat_form()
-	{
-		$this->load->model('M_admin');
-		$id_form = $this->input->post("id_form");
-		$pic_ambil = $this->input->post("pic_ambil");
-		$query = $this->M_admin->update_stat_form($id_form, $pic_ambil);
-		$sts = "";
+		$query = $this->M_admin->hapus_paket($id_hapus, $data);
 		if ($query) {
 			$sts = "ok";
 		} else {
-			$sts = "Gagal update data";
+			$sts = "Gagal Simpan Data";
 		}
+
 		$kirim = array(
 			"sts" => $sts
 		);
