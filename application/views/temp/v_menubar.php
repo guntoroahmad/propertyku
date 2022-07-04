@@ -113,7 +113,7 @@
 						<!-- <span class="nav-link-text">Setting</span> -->
 					</a>
 					<div class="dropdown-menu" aria-labelledby="dropdownMenu2" style="width: fit-content;margin-left: 10%;">
-						<a class="dropdown-item" type="button" href="<?php echo base_url(); ?>admin/user">Set Admin Member</a>
+						<a class="dropdown-item" type="button" href="<?php echo base_url(); ?>admin/user">Set Member</a>
 						<a class="dropdown-item" type="button" href="<?php echo base_url(); ?>admin/toko_member">Set Toko Member</a>
 						<a class="dropdown-item" type="button" href="<?php echo base_url(); ?>admin/bank">Set Bank</a>
 						<a class="dropdown-item" type="button" href="<?php echo base_url(); ?>properti/tipe_properti">Set Tipe Properti</a>
