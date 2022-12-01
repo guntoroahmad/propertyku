@@ -108,6 +108,12 @@ class M_properti extends CI_Model
 		return $this->db->query($sql);
 	}
 
+	function tabel_jasa()
+	{
+		$sql = "SELECT * FROM m_jasa;";
+		return $this->db->query($sql);
+	}
+
 	function cek_data_properti($nama_properti)
 	{
 		$sql = "SELECT * FROM m_toko_produk_member WHERE nama_properti = '{$nama_properti}' AND status = 1;";
@@ -162,6 +168,12 @@ class M_properti extends CI_Model
 		return $this->db->insert_id();
 	}
 
+	function simpan_jasa($data)
+	{
+		$this->db->insert('m_jasa', $data);
+		return $this->db->insert_id();
+	}
+
 	function get_properti_edit($id_edit)
 	{
 		$sql = "SELECT * FROM m_toko_produk_member WHERE id_toko_produk_member='{$id_edit}';";
@@ -192,6 +204,12 @@ class M_properti extends CI_Model
 		return $this->db->query($sql);
 	}
 
+	function get_jasa_edit($id_edit)
+	{
+		$sql = "SELECT * FROM m_jasa WHERE id_jasa='{$id_edit}';";
+		return $this->db->query($sql);
+	}
+
 	function cek_properti_edit($nama_properti, $id_edit)
 	{
 		$sql = "SELECT nama_properti FROM m_toko_produk_member WHERE nama_properti = '{$nama_properti}' AND id_toko_produk_member != '{$id_edit}' AND status = 1;";
@@ -213,6 +231,12 @@ class M_properti extends CI_Model
 	function cek_sertifikat_edit($sertifikat, $id_edit)
 	{
 		$sql = "SELECT nama_sertifikat FROM m_sertifikat WHERE nama_sertifikat='{$sertifikat}' AND id_sertifikat != '{$id_edit}';";
+		return $this->db->query($sql);
+	}
+
+	function cek_jasa_edit($jasa, $id_edit)
+	{
+		$sql = "SELECT nama_jasa FROM m_jasa WHERE nama_jasa='{$jasa}' AND id_jasa != '{$id_edit}';";
 		return $this->db->query($sql);
 	}
 
@@ -246,6 +270,12 @@ class M_properti extends CI_Model
 		return $this->db->update('m_sosial_media', $data);
 	}
 
+	function update_jasa($id, $data)
+	{
+		$this->db->where('id_jasa', $id);
+		return $this->db->update('m_jasa', $data);
+	}
+
 	function hapus_tipe($id, $data)
 	{
 		$this->db->where('id_tipe_properti', $id);
@@ -274,6 +304,12 @@ class M_properti extends CI_Model
 	{
 		$this->db->where('id_toko_produk_member', $id);
 		return $this->db->update('m_toko_produk_member', $data);
+	}
+
+	function hapus_jasa($id)
+	{
+		$this->db->where('id_jasa', $id);
+		return $this->db->delete('m_jasa');
 	}
 
 	function konfirm_properti($data){

@@ -253,7 +253,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 							<div class="row">
 								<label class="control-label col-md-3 col-sm-3 col-xs-12">Photo Property</label>
 								<div class="form-group">
-									<div class="col-md-9 col-sm-9 col-xs-12" id="div_foto_bantuan" class="div_foto_bantuan">
+									<div class="col-md-9 col-sm-9 col-xs-12 card-deck" id="div_foto_bantuan" class="div_foto_bantuan">
 									</div>
 								</div>
 							</div>
@@ -455,7 +455,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 								</div>
 							</div><br />
 							<div class="row">
-								<label class="control-label col-md-3 col-sm-3 col-xs-12">Photo Product</label>
+								<label class="control-label col-md-3 col-sm-3 col-xs-12">Photo Property</label>
 								<!--<div class="form-group">-->
 								<!--<div class="col-md-9 col-sm-9 col-xs-12" id="div_edit_foto_produk">-->
 								<div class="card-deck div_edit_foto_properti" id="div_edit_foto_properti">
@@ -617,6 +617,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 			$(document).on("click", ".b_hapus_foto", function() {
 				$(this).parents(".kartu").remove();
+				// $('#b_tambah_gambar').css('display', '');
 			});
 
 			$(document).on("click", ".b_hapus_foto2", function() {

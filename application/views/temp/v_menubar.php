@@ -121,6 +121,7 @@
 						<a class="dropdown-item" type="button" href="<?php echo base_url(); ?>properti/sertifikat">Set Sertifikat</a>
 						<a class="dropdown-item" type="button" href="<?php echo base_url(); ?>properti/sosial_media">Set Sosial Media</a>
 						<a class="dropdown-item" type="button" href="<?php echo base_url(); ?>admin/paket">Set Paket Promo</a>
+						<a class="dropdown-item" type="button" href="<?php echo base_url(); ?>admin/jasa">Set Modul Jasa</a>
 					</div>
 				</li>
 			</ul>

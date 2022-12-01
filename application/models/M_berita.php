@@ -14,13 +14,23 @@ class M_berita extends CI_Model
 
 	function tabel_berita()
 	{
-		$sql = "SELECT * FROM ($this->table_name);";
+		$sql = "SELECT tb.*, mbc.file_url, mbc.create_at 
+		FROM t_berita tb
+		LEFT JOIN m_berita_cover mbc
+		ON tb.id_berita = mbc.id_berita
+		ORDER BY tb.id_berita DESC;";
 		return $this->db->query($sql);
 	}
 
 	function simpan_berita($data)
 	{
 		$this->db->insert($this->table_name, $data);
+		return $this->db->insert_id();
+	}
+
+	function simpan_berita_img($data)
+	{
+		$this->db->insert('m_berita_cover', $data);
 		return $this->db->insert_id();
 	}
 
@@ -48,10 +58,15 @@ class M_berita extends CI_Model
 		return $this->db->update($this->table_name, $data);
 	} */
 
-	function hapus_berita($id) {
-        $this->db->where($this->pk, $id);
-        return $this->db->delete($this->table_name);
-    }
+	function hapus_berita($id)
+	{
+		$this->db->where($this->pk, $id);
+		$q_del = $this->db->delete('m_berita_cover');
+		if ($q_del) {
+			$this->db->where($this->pk, $id);
+			return $this->db->delete($this->table_name);
+		}
+	}
 
 	function update_stat_barang($id_permintaan, $status_barang)
 	{

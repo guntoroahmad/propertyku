@@ -67,6 +67,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 														<th>Judul Berita</th>
 														<th>Penulis</th>
 														<th>Status</th>
+														<th>Cover</th>
 														<th>Aksi</th>
 													</tr>
 												</thead>
@@ -133,6 +134,25 @@ defined('BASEPATH') or exit('No direct script access allowed');
 									<div class="form-group">
 										<label class="form-control-label">Isi Berita</label>
 										<textarea id="isi_berita" name="isi_berita"></textarea>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<label class="control-label col-md-3 col-sm-3 col-xs-12">Photo</label>
+								<div class="col-md-8 col-sm-8 col-xs-12">
+									<input type="file" id="gambar" accept="image/*">
+									<br /><br>
+									<div style="max-height: 300px;">
+										<img id="image" class="gambarku" src="<?php echo base_url(); ?>assets/img/brand/logo_property.jpg" style="width: 100%;">
+									</div>
+									<br />
+									<button type="button" id="b_tambah_gambar" class="btn btn-warning">Add Photo</button>
+								</div>
+							</div><br />
+							<div class="row">
+								<label class="control-label col-md-3 col-sm-3 col-xs-12">Photo Cover</label>
+								<div class="form-group">
+									<div class="col-md-9 col-sm-9 col-xs-12 card-deck" id="div_foto_bantuan" class="div_foto_bantuan">
 									</div>
 								</div>
 							</div>
@@ -210,6 +230,51 @@ defined('BASEPATH') or exit('No direct script access allowed');
 			</div>
 		</div>
 
+		<!--Modal Edit Foto Properti-->
+		<div class="modal fade m_edit_foto_properti" tabindex="-1" role="dialog" aria-hidden="true">
+			<!--<div class="vertical-alignment-helper">-->
+			<div class="modal-dialog modal-dialog-centered modal-xl">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="myModalLabel2">Ubah Foto Bantuan</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<form id="f_edit_foto_properti" class="form-horizontal">
+							<input type="hidden" name="id_edit" class="edit">
+							<input type="hidden" name="id_properti2" id="id_properti2" class="edit">
+							<div class="row">
+								<label class="control-label col-md-3 col-sm-3 col-xs-12">Photo</label>
+								<div class="col-md-8 col-sm-8 col-xs-12">
+									<input type="file" id="gambar_penerima2" accept="image/*">
+									<br /><br>
+									<div style="max-height: 300px;">
+										<img id="image_penerima2" class="gambarku" src="<?php echo base_url(); ?>assets/img/brand/logo_property.jpg" style="width: 100%;">
+									</div>
+									<br />
+									<button type="button" id="b_tambah_gambar_penerima2" class="btn btn-warning">Add Photo</button>
+								</div>
+							</div><br />
+							<div class="row">
+								<label class="control-label col-md-3 col-sm-3 col-xs-12">Photo Cover</label>
+								<!--<div class="form-group">-->
+								<!--<div class="col-md-9 col-sm-9 col-xs-12" id="div_edit_foto_produk">-->
+								<div class="card-deck div_edit_foto_properti" id="div_edit_foto_properti">
+								</div>
+								<!--</div>-->
+							</div>
+						</form>
+					</div><br>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+						<button type="button" class="btn btn-danger" id="b_edit_foto_properti" data-loading-text="<i class='fa fa-spinner fa-spin '></i> Proses...">Simpan</button>
+					</div>
+				</div>
+			</div>
+			<!--</div>-->
+		</div>
+
 		<!-- Modal Hapus berita -->
 		<div class="modal fade mod_hapus_berita" id="mod_hapus_berita" tabindex="-1" role="dialog" aria-labelledby="modal-notification" aria-hidden="true">
 			<div class="modal-dialog modal-danger modal-dialog-centered modal-" role="document">
@@ -239,6 +304,77 @@ defined('BASEPATH') or exit('No direct script access allowed');
 		var dt_table = $("#datatable-responsive").DataTable();
 		$(document).ready(function() {
 			tampil_berita();
+
+			var $image = $('#image');
+			$image.cropper({
+				aspectRatio: 1,
+				responsive: true,
+				viewMode: 1,
+				minContainerWidth: 160,
+				minContainerHeight: 160
+			});
+
+			var cropper = $image.data('cropper');
+			$('#gambar').change(function(event) {
+				cropper.replace(URL.createObjectURL(event.target.files[0]));
+			});
+
+			var $image_penerima2 = $('#image_penerima2');
+			$image_penerima2.cropper({
+				aspectRatio: 1,
+				responsive: true,
+				viewMode: 1,
+				minContainerWidth: 160,
+				minContainerHeight: 160
+			});
+
+			var cropper_penerima2 = $image_penerima2.data('cropper');
+			$('#gambar_penerima2').change(function(event) {
+				cropper_penerima2.replace(URL.createObjectURL(event.target.files[0]));
+			});
+
+			$("#b_tambah_gambar").click(function() {
+				//            alert($(".kartu").length);
+				var foto = cropper.getCroppedCanvas().toDataURL('image/jpeg');
+				var isi = '<div class="card kartu" style="height: 250px;width: 170px;margin-bottom: 5px;">\
+                        <div class="image view view-first"><input type="hidden" name="foto[]" value="' + foto + '">\
+                            <img style="display: block;max-width: 100%;" src="' + foto + '" alt="image">\
+                        </div>\
+                        <p>Hapus Foto</p>\
+                        <div class="tools tools-bottom b_hapus_foto"><i class="fa fa-times"></i>Hapus</div>\
+                    </div>';
+				$("#div_foto_bantuan").append(isi);
+				$('#b_tambah_gambar').css('display', 'none');
+			});
+
+			$("#b_tambah_gambar_penerima2").click(function() {
+				//            alert('aa');
+				var count = $('#div_edit_foto_properti > .card').length;
+				var foto = cropper_penerima2.getCroppedCanvas().toDataURL('image/jpeg');
+				// alert(count);
+				if (count == 0) {
+					var isi = '<div class="card kartu" style="height: 250px;width: 170px;margin-bottom: 5px;">\
+                        <div class="image view view-first"><input type="hidden" name="foto2[]" value="' + foto + '">\
+                            <img style="display: block;max-width: 100%;" src="' + foto + '" alt="image">\
+                        </div>\
+                        <p>Hapus Foto</p>\
+                        <div class="tools tools-bottom b_hapus_foto2"><i class="fa fa-times"></i>Hapus</div>\
+                    </div>';
+				} else {
+					alert('File foto cover berita tidak bisa lebih dari 1 file.');
+					var isi = '';
+				}
+				$("#div_edit_foto_properti").append(isi);
+			});
+
+			$(document).on("click", ".b_hapus_foto", function() {
+				$(this).parents(".kartu").remove();
+				$('#b_tambah_gambar').css('display', '');
+			});
+
+			$(document).on("click", ".b_hapus_foto2", function() {
+				$(this).parents(".kartu").remove();
+			});
 
 			tinymce.init({
 				selector: 'textarea#isi_berita',
@@ -305,6 +441,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 					null,
 					null,
 					null,
+					null,
 					null
 					/* {
 					"width": "250px"
@@ -346,6 +483,11 @@ defined('BASEPATH') or exit('No direct script access allowed');
 				return false;
 			};
 
+			if ($.trim($("#div_foto_bantuan").text()) == "") {
+				toastr.error("Foto belum dipilih", 'INFO');
+				return false;
+			}
+
 			var formnya = $("#f_tambah_berita")[0];
 			var Data_tambah = new FormData(formnya);
 			btn.button('loading');
@@ -358,6 +500,9 @@ defined('BASEPATH') or exit('No direct script access allowed');
 				contentType: false,
 				cache: false,
 				processData: false,
+				beforeSend: function() {
+					$('#btn_simpan').prop('disabled', true);
+				},
 				success: function(out) {
 					if (out.sts == "ok") {
 						toastr.success("Berhasil", 'INFO');
@@ -380,6 +525,34 @@ defined('BASEPATH') or exit('No direct script access allowed');
 					btn.button('reset');
 				}
 			});
+		});
+
+		// TAMPIL EDIT GAMBAR
+		$(document).on("click", ".p_detail_gambar", function() {
+			var id = $(this).data("id");
+			var mdl = $(".m_edit_foto_properti");
+			var btn = $(this);
+			btn.button('loading');
+			mdl.find(".edit").val(id);
+			$.post(ip_server + "berita/baca_menu_edit_gambar", {
+				id_edit: id
+			}, function(out) {
+				btn.button('reset');
+				var isi = "";
+				for (var i = 0; i < out.length; i++) {
+					isi += '<div class="card kartu" style="height: 250px;width: 170px;margin-bottom: 5px;">\
+                        <div class="image view view-first"><input type="hidden" name="foto2[]" value="' + out[i][1] + '">\
+                            <img style="display: block;max-width: 100%;" src="' + out[i][1] + '" alt="image">\
+                        </div>\
+                        <p>Hapus Foto</p>\
+                        <div class="tools tools-bottom b_hapus_foto2"><i class="fa fa-times"></i>Hapus</div>\
+                    </div>';
+
+					$("#id_properti2").val(out[i][0]);
+				}
+				$("#div_edit_foto_properti").html(isi);
+				mdl.modal("show");
+			}, "json");
 		});
 
 		// TAMPIL EDIT BERITA
@@ -502,6 +675,42 @@ defined('BASEPATH') or exit('No direct script access allowed');
 						$("#ed_isi_berita").val("");
 						tinyMCE.activeEditor.setContent("");
 						$("#ed_tgl_publish").val("");
+					} else {
+						toastr.error(out.sts, 'INFO');
+					}
+					btn.button('reset');
+				},
+				error: function() {
+					toastr.error('Mohon, Cek koneksi internet', 'ERROR');
+					btn.button('reset');
+				}
+			});
+		});
+
+		// SIMPAN EDIT FOTO
+		$(document).on("click", "#b_edit_foto_properti", function() {
+			var btn = $(this);
+			var formnya = $("#f_edit_foto_properti")[0];
+			var Data_tambah = new FormData(formnya);
+			if ($.trim($(".div_edit_foto_properti").text()) == "") {
+				toastr.error("Foto belum dipilih", 'INFO');
+				return false();
+			}
+			btn.button('loading');
+			$.ajax({
+				url: ip_server + "berita/ubah_foto",
+				type: "POST",
+				data: Data_tambah,
+				dataType: "json",
+				contentType: false,
+				cache: false,
+				processData: false,
+				success: function(out) {
+					if (out.sts == "ok") {
+						toastr.success("Ubah Sukses", 'INFO');
+						/* dt_table.ajax.reload(null, false);
+						$(".m_edit_foto_properti").modal("hide"); */
+						location.reload();
 					} else {
 						toastr.error(out.sts, 'INFO');
 					}

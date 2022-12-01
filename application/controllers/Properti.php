@@ -749,7 +749,7 @@ class Properti extends CI_Controller
 				"create_at" => date("Y-m-d H:i:s")
 			);
 			//            print_r($data_det);
-			$this->M_gambar_properti->set_data($data_det);
+			$this->M_gambar_properti->set_cover_data($data_det);
 		}
 		//        exit();
 		$this->db->trans_complete();

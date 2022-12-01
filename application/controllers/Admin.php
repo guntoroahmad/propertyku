@@ -60,6 +60,14 @@ class Admin extends CI_Controller
 		$this->load->view("temp/v_foot");
 	}
 
+	public function jasa(){
+		$this->load->view("temp/v_head");
+		$this->load->view("temp/v_menubar");
+		$this->load->view("temp/v_navbar");
+		$this->load->view("v_jasa");
+		$this->load->view("temp/v_foot");
+	}
+
 	function tabel_user()
 	{
 		$this->load->model('M_admin');
@@ -192,6 +200,28 @@ class Admin extends CI_Controller
 			'data' => $arr
 		);
 		echo json_encode($arr);
+	}
+
+	function tabel_jasa()
+	{
+		$this->load->model('M_properti');
+		/* $nama = $_SESSION['nama'];*/
+		$query = $this->M_properti->tabel_jasa();
+		$data = array();
+		$no = 0;
+		// $status = '';
+		foreach ($query->result() as $row) {
+
+			$data[$no][0] = $no + 1;
+			$data[$no][1] = $row->nama_jasa;
+			$data[$no][2] = '<button type="button" class="btn btn-warning btn-round" id="mod_jasa_edit" data-id="' . $row->id_jasa . '">Ubah</button>
+                                <button type="button" class="btn btn-danger btn-round" id="mod_jasa_del" data-id="' . $row->id_jasa . '">Hapus</button>';
+			$no++;
+		}
+		$kirim = array(
+			"data" => $data
+		);
+		$this->output->set_content_type('application/json')->set_output(json_encode($kirim));
 	}
 
 	public function simpan_user()
@@ -331,6 +361,31 @@ class Admin extends CI_Controller
 			->set_output(json_encode($kirim));
 	}
 
+	function simpan_jasa()
+	{
+		$this->load->model('m_properti');
+		$nama_jasa = $this->input->post('nama_jasa');
+		$data = array();
+
+		$data = array(
+			"nama_jasa" => $nama_jasa
+		);
+		// print_r($data);exit();
+		$query = $this->m_properti->simpan_jasa($data);
+
+		if ($query) {
+			$sts = "ok";
+		} else {
+			$sts = "Gagal Simpan Data";
+		}
+
+		$kirim = array(
+			"sts" => $sts
+		);
+		$this->output->set_content_type('application/json')
+			->set_output(json_encode($kirim));
+	}
+
 	function baca_user_edit()
 	{
 		$this->load->model('M_admin');
@@ -388,6 +443,19 @@ class Admin extends CI_Controller
 			$data[2] = $row->lokasi_lng;
 			$data[3] = $row->lokasi_lat;
 			$data[4] = $row->alamat;
+		}
+		$this->output->set_content_type('application/json')->set_output(json_encode($data));
+	}
+
+	function baca_jasa_edit()
+	{
+		$this->load->model('M_properti');
+		$id_edit = $this->input->post("id_edit");
+		$query = $this->M_properti->get_jasa_edit($id_edit);
+		$data = array();
+		foreach ($query->result() as $row) {
+			$data[0] = $row->id_jasa;
+			$data[1] = $row->nama_jasa;
 		}
 		$this->output->set_content_type('application/json')->set_output(json_encode($data));
 	}
@@ -541,6 +609,34 @@ class Admin extends CI_Controller
 			->set_output(json_encode($kirim));
 	}
 
+	function simpan_jasa_edit()
+	{
+		$this->load->model('M_properti');
+		$id_edit = $this->input->post("id_edit");
+		$nama_jasa = $this->input->post('ed_nama_jasa');
+		$data = array();
+
+		$data = array(
+			"nama_jasa" => $nama_jasa
+		);
+
+		$cek = $this->M_properti->cek_jasa_edit(addslashes($nama_jasa), $id_edit)->num_rows();
+		$sts = "Nama Jasa sudah ada";
+		if ($cek == 0) {
+			$query = $this->M_properti->update_jasa($id_edit, $data);
+			if ($query) {
+				$sts = "ok";
+			} else {
+				$sts = "Gagal Simpan Data";
+			}
+		}
+		$kirim = array(
+			"sts" => $sts
+		);
+		$this->output->set_content_type('application/json')
+			->set_output(json_encode($kirim));
+	}
+
 	public function hapus_user()
 	{
 		$this->load->model('M_admin');
@@ -594,6 +690,25 @@ class Admin extends CI_Controller
 		);
 
 		$query = $this->M_admin->hapus_paket($id_hapus, $data);
+		if ($query) {
+			$sts = "ok";
+		} else {
+			$sts = "Gagal Simpan Data";
+		}
+
+		$kirim = array(
+			"sts" => $sts
+		);
+		$this->output->set_content_type('application/json')
+			->set_output(json_encode($kirim));
+	}
+
+	public function hapus_jasa()
+	{
+		$this->load->model('M_properti');
+		$id_hapus = $this->input->post("id_hapus");
+
+		$query = $this->M_properti->hapus_jasa($id_hapus);
 		if ($query) {
 			$sts = "ok";
 		} else {
