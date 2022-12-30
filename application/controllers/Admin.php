@@ -60,7 +60,8 @@ class Admin extends CI_Controller
 		$this->load->view("temp/v_foot");
 	}
 
-	public function jasa(){
+	public function jasa()
+	{
 		$this->load->view("temp/v_head");
 		$this->load->view("temp/v_menubar");
 		$this->load->view("temp/v_navbar");
@@ -74,14 +75,32 @@ class Admin extends CI_Controller
 		$query = $this->M_admin->tabel_user();
 		$data = array();
 		$no = 0;
+		$icon_set = '';
 		foreach ($query->result() as $row) {
-
+			if ($row->hak == '') {
+				$hak = '-';
+				$icon_set = '-';
+			} else {
+				$hak = $row->hak;
+				if ($row->hak == 'admin' && $row->set_contact == 'Ya') {
+					$icon_set = '<button  type="button" class="icon icon-shape bg-gradient-green text-white rounded-circle shadow" id="set_nomor" data-id="' . $row->id_member . '">
+									<i class="ni ni-mobile-button"></i>
+								</button>';
+				} else if ($row->hak != 'admin' && ($row->set_contact == NULL || $row->set_contact == 'Tidak')) {
+					$icon_set = '-';
+				} else {
+					$icon_set = '<button  type="button" class="icon icon-shape bg-gradient-red text-white rounded-circle shadow" id="set_nomor" data-id="' . $row->id_member . '">
+									<i class="ni ni-mobile-button"></i>
+								</button>';
+				}
+			}
 			$data[$no][0] = $no + 1;
 			$data[$no][1] = $row->nama;
 			$data[$no][2] = $row->email;
-			$data[$no][3] = $row->hak;
+			$data[$no][3] = $hak;
 			$data[$no][4] = '<button type="button" class="btn btn-warning btn-round" id="user_edit" data-id="' . $row->id_member . '">Ubah</button>
                                 <button type="button" class="btn btn-danger btn-round" id="user_del" data-id="' . $row->id_member . '">Hapus</button>';
+			$data[$no][5] = $icon_set;
 			$no++;
 		}
 		$kirim = array(
@@ -646,6 +665,27 @@ class Admin extends CI_Controller
 		);
 
 		$query = $this->M_admin->hapus_user($id_hapus, $data);
+		if ($query) {
+			$sts = "ok";
+		} else {
+			$sts = "Gagal Simpan Data";
+		}
+
+		$kirim = array(
+			"sts" => $sts
+		);
+		$this->output->set_content_type('application/json')
+			->set_output(json_encode($kirim));
+	}
+
+	public function update_no_admin()
+	{
+		$this->load->model('M_admin');
+		$id_member = $this->input->post("id_member");
+		$data = array(
+			"set_contact" => 'Ya'
+		);
+		$query = $this->M_admin->update_no_admin($id_member, $data);
 		if ($query) {
 			$sts = "ok";
 		} else {

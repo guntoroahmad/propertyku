@@ -12,7 +12,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 	<meta name="author" content="Creative Tim">
 	<title>Propertyku</title>
 	<!-- Favicon -->
-	<link rel="icon" href="<?php echo base_url(); ?>assets/img/brand/moeispng.png" type="image/png">
+	<link rel="icon" href="<?php echo base_url(); ?>assets/img/brand/logo.png" type="image/png">
 	<!-- Bootsrap -->
 	<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/bootstrap/bootstrap.min.css" type="text/css">
 	<!-- <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/login.css" type="text/css"> -->

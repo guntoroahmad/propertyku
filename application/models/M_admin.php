@@ -14,7 +14,7 @@ class M_admin extends CI_Model
 
 	function tabel_user()
 	{
-		$sql = "SELECT * FROM ($this->table_name);";
+		$sql = "SELECT * FROM ($this->table_name) WHERE delete_at is null;";
 		return $this->db->query($sql);
 	}
 
@@ -160,5 +160,22 @@ class M_admin extends CI_Model
 	{
 		$sql = "UPDATE permintaan SET STATUS_BARANG = '{$status_barang}' WHERE ID = '{$id_permintaan}';";
 		return $this->db->query($sql);
+	}
+
+	function update_no_admin($id_member, $data)
+	{
+		$sql_cek = "SELECT * FROM m_member WHERE hak = 'admin' AND set_contact = 'Ya' AND delete_at IS NULL";
+		$q_cek = $this->db->query($sql_cek);
+		if ($q_cek->num_rows() == 0) {
+			$this->db->where($this->pk, $id_member);
+			return $this->db->update($this->table_name, $data);
+		} else {
+			$this->db->where($this->pk, $id_member);
+			$q_upd = $this->db->update($this->table_name, $data);
+			if ($q_upd) {
+				$sql = "UPDATE m_member SET set_contact = 'Tidak' WHERE id_member != '{$id_member}' and hak = 'admin' and delete_at is null;";
+			}
+			return $this->db->query($sql);
+		}
 	}
 }

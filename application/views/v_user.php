@@ -68,6 +68,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 														<th>Email</th>
 														<th>Hak</th>
 														<th>Aksi</th>
+														<th>Set Nomor</th>
 													</tr>
 												</thead>
 												<tbody>
@@ -125,6 +126,18 @@ defined('BASEPATH') or exit('No direct script access allowed');
 									<div class="form-group">
 										<label class="form-control-label" for="input-last-name">Email</label>
 										<input type="email" id="email" name="email" class="form-control" placeholder="Email" autocomplete="off">
+									</div>
+								</div>
+							</div>
+							<div class="row" id="set_no" style="display: none;">
+								<div class="col-lg-6 col-md-12 col-sm-12">
+									<div class="form-group">
+										<label class="form-control-label" for="input-username">Set Sebagai Nomer Utama</label>
+										<select class="form-control" aria-label="Default select example" id="no_utama" name="no_utama">
+											<option selected value="">Pilih</option>
+											<option value="Ya">Ya</option>
+											<option value="Tidak">Tidak</option>
+										</select>
 									</div>
 								</div>
 							</div>
@@ -218,6 +231,31 @@ defined('BASEPATH') or exit('No direct script access allowed');
 				</div>
 			</div>
 		</div>
+
+		<!-- Modal Set Nomor -->
+		<div class="modal fade mod_set_nomor" id="mod_set_nomor" tabindex="-1" role="dialog" aria-labelledby="modal-notification" aria-hidden="true">
+			<div class="modal-dialog modal-danger modal-dialog-centered modal-" role="document">
+				<div class="modal-content bg-gradient-danger">
+					<div class="modal-header">
+						<h6 class="modal-title" id="modal-title-notification">Setting Nomor Admin</h6>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">×</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div class="py-3 text-center">
+							<i class="ni ni-bell-55 ni-3x"></i>
+							<!-- <h4 class="heading mt-4">Anda yakin menggunakan nomor admin ini sebagai default ?</h4> -->
+							<p>Anda yakin menggunakan nomor admin ini sebagai default ?</p>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-white" id="btn_set_nomor">Ya, simpan sebagai default</button>
+						<button type="button" class="btn btn-link text-white ml-auto" data-dismiss="modal">Batal</button>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 	<script type="text/javascript">
 		var dt_table = $("#datatable-responsive").DataTable();
@@ -226,6 +264,15 @@ defined('BASEPATH') or exit('No direct script access allowed');
 			// tampil_kordinator();
 			simpan_user();
 		});
+		/* $('#hak_user').on('change', function() {
+			$hak_user = $(this).val();
+			if ($hak_user == 'admin') {
+				$('#set_no').css('display', '');
+			} else {
+				$('#no_utama').val('');
+				$('#set_no').css('display', 'none');
+			}
+		}) */
 
 		// TAMPIL TABEL USER
 		function tampil_user() {
@@ -245,6 +292,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 				columns: [{
 						"width": "10px"
 					},
+					null,
 					null,
 					null,
 					null,
@@ -273,7 +321,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 					toastr.error("Password belum di isi", 'INFO');
 					return false;
 				};
-				
+
 				if ($("#hak_user").val() == "") {
 					toastr.error("Hak belum di pilih", 'INFO');
 					return false;
@@ -332,23 +380,6 @@ defined('BASEPATH') or exit('No direct script access allowed');
 			$.post(ip_server + "admin/baca_user_edit", {
 				id_edit: id
 			}, function(out) {
-				/* if (out[2] == 'user') {
-					$('#ed_set_kord').css('display', '');
-				} else {
-					$('#ed_set_kord').css('display', 'none');
-				}
-
-				$('#ed_hak_user').on('change', function() {
-					var hak_user = $('#ed_hak_user').val();
-					// alert(hak_user);
-					if (hak_user == 'user') {
-						$('#ed_set_kord').css('display', '');
-						$("[name=ed_kord_user]").val(out[3]);
-					} else {
-						$('#ed_set_kord').css('display', 'none');
-						$("[name=ed_kord_user]").val('');
-					}
-				}); */
 
 				btn.button('reset');
 				$("[name=id_edit]").val(out[0]);
@@ -432,6 +463,44 @@ defined('BASEPATH') or exit('No direct script access allowed');
 							toastr.success("Hapus Sukses", 'INFO');
 							dt_table.ajax.reload(null, false);
 							$(".mod_hapus_user").modal("hide");
+						} else {
+							toastr.error(out.sts, 'INFO');
+						}
+						btn.button('reset');
+					},
+					error: function() {
+						toastr.error('Mohon, Cek koneksi internet', 'ERROR');
+						btn.button('reset');
+					}
+				});
+
+			});
+		});
+
+		// SET NOMOR DEFAULT
+		$('#datatable-responsive').on("click", "#set_nomor", function() {
+			var id = $(this).data("id");
+			var mdl = $(".mod_set_nomor");
+			mdl.modal("show");
+			mdl.find(".btn-danger").data("id", id);
+
+			$('#btn_set_nomor').on('click', function() {
+				var btn = $(this);
+				btn.button('loading');
+
+				$.ajax({
+					url: ip_server + "admin/update_no_admin",
+					type: "POST",
+					data: {
+						id_member: id
+					},
+					dataType: "json",
+					cache: false,
+					success: function(out) {
+						if (out.sts == "ok") {
+							toastr.success("Update Sukses", 'INFO');
+							dt_table.ajax.reload(null, false);
+							$(".mod_set_nomor").modal("hide");
 						} else {
 							toastr.error(out.sts, 'INFO');
 						}
