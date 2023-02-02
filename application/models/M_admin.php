@@ -178,4 +178,21 @@ class M_admin extends CI_Model
 			return $this->db->query($sql);
 		}
 	}
+
+	function list_user($tipe)
+	{
+		if ($tipe == 'member') {
+			$sql = "SELECT * FROM m_member;";
+			return $this->db->query($sql);
+		} else if ($tipe == 'non_member') {
+			$sql = "SELECT CONCAT(android_merk, ' - ', android_version) nama, api_key FROM m_nonmember;";
+			return $this->db->query($sql);
+		} else {
+			$sql = "SELECT nama, api_key FROM m_member WHERE api_key IS NOT NULL 
+			UNION ALL
+			SELECT CONCAT(android_merk, ' - ', android_version) nama, api_key FROM m_nonmember
+			WHERE api_key IS NOT NULL;";
+			return $this->db->query($sql);
+		}
+	}
 }

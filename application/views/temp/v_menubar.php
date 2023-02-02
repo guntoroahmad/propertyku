@@ -105,6 +105,7 @@
 						<a class="dropdown-item" type="button" href="<?php echo base_url(); ?>properti">Tambah Properti</a>
 						<a class="dropdown-item" type="button" href="<?php echo base_url(); ?>berita">Tambah Berita</a>
 						<a class="dropdown-item" type="button" href="<?php echo base_url(); ?>member">Future List Member</a>
+						<a class="dropdown-item" type="button" href="<?php echo base_url(); ?>notifikasi">Push Notifikasi</a>
 					</div>
 				</li>
 				<li class="nav-item dropdown">

@@ -419,7 +419,7 @@ class Properti extends CI_Controller
 				$im = imagecreatefromstring($base64_gambar);
 				$img = $this->my_wanto->resize_image($im, $lebar, $tinggi);
 				//end compress
-				$lokasi = "fileapp/propertyku/profil/" . $nama_kelurahan . "-$tipe_properti.$i-" . date('U') . ".jpg";
+				$lokasi = "fileapp/propertyku/produk/" . $nama_kelurahan . "-$tipe_properti.$i-" . date('U') . ".jpg";
 				$lokasi_real = "../" . $lokasi;
 				imagejpeg($img, $lokasi_real, 90);
 				$sts = "";
@@ -722,6 +722,7 @@ class Properti extends CI_Controller
 	function ubah_foto()
 	{
 		$this->load->model('M_gambar_properti');
+		$this->load->model('M_properti');
 		$id_edit_properti = $this->input->post("id_edit");
 		$id_properti = $this->input->post("id_properti2");
 		// print_r($id_properti);return false;
@@ -738,7 +739,7 @@ class Properti extends CI_Controller
 			$im = imagecreatefromstring($base64_gambar);
 			$img = $this->my_wanto->resize_image($im, $lebar, $tinggi);
 			// $lokasi = "file/property/property_edit_" . $i . "-" . date('U') . ".jpg";
-			$lokasi = "fileapp/propertyku/profil/property_edit_" . $i . "-" . date('U') . ".jpg";
+			$lokasi = "fileapp/propertyku/produk/property_edit_" . $i . "-" . date('U') . ".jpg";
 			$lokasi_real = "../" . $lokasi;
 			imagejpeg($img, $lokasi_real, 90);
 			// imagejpeg($img, $lokasi, 90);
@@ -749,7 +750,8 @@ class Properti extends CI_Controller
 				"create_at" => date("Y-m-d H:i:s")
 			);
 			//            print_r($data_det);
-			$this->M_gambar_properti->set_cover_data($data_det);
+			$this->M_properti->simpan_properti_img($data_det);
+			
 		}
 		//        exit();
 		$this->db->trans_complete();

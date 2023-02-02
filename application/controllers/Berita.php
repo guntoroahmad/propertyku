@@ -103,7 +103,7 @@ class Berita extends CI_Controller
 			$lokasi_real = "../" . $lokasi;
 			imagejpeg($img, $lokasi_real, 90); */
 			// LOCAL FILE UPLOAD
-			$lokasi = "file/berita/" . "cover_$id_berita-" . date('U') . ".jpg";
+			$lokasi = "fileapp/propertyku/berita/" . "cover_$id_berita-" . date('U') . ".jpg";
 			imagejpeg($img, $lokasi, 90);
 			$sts = "";
 			$data_det = array(
@@ -226,7 +226,7 @@ class Berita extends CI_Controller
 			$lokasi_real = "../" . $lokasi;
 			imagejpeg($img, $lokasi_real, 90);
 			// LOCAL FILE UPLOAD
-			/* $lokasi = "file/berita/cover_edit_" . $id_edit_berita . "-" . date('U') . ".jpg";
+			/* $lokasi = "fileapp/propertyku/berita/cover_edit_" . $id_edit_berita . "-" . date('U') . ".jpg";
 			imagejpeg($img, $lokasi, 90); */
 			$sts = "";
 			$data_det = array(

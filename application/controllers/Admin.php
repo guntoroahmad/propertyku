@@ -761,4 +761,23 @@ class Admin extends CI_Controller
 		$this->output->set_content_type('application/json')
 			->set_output(json_encode($kirim));
 	}
+
+	function list_user()
+	{
+		$this->load->model('M_admin');
+		$tipe = $this->input->post("tipe");
+		$res = $this->M_admin->list_user($tipe)->result_array();
+		$arr = array();
+		foreach ($res as $dt) {
+			$arr[] = array(
+				'nama' => $dt['nama'],
+				'apikey' => $dt['api_key'],
+			);
+		}
+
+		$data = array(
+			'data' => $arr
+		);
+		echo json_encode($arr);
+	}
 }
